@@ -246,7 +246,7 @@ const HeroSection = () => {
                   >
                     <Star className="text-primary" size={12} />
                     <div className="text-primary font-semibold text-xs">3+</div>
-                    <div className="text-xs font-poppins text-foreground">Years</div>
+                    <div className="text-xs font-poppins text-foreground">Years Experience</div>
                   </motion.div>
 
                   <motion.div
