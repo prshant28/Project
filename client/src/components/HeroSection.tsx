@@ -261,7 +261,7 @@ const HeroSection = () => {
                   >
                     <Trophy className="text-secondary" size={12} />
                     <div className="text-secondary font-semibold text-xs">11+</div>
-                    <div className="text-xs font-poppins text-foreground">Projects</div>
+                    <div className="text-xs font-poppins text-foreground">Projects Completed</div>
                   </motion.div>
 
                   {/* Mobile decorative floating elements */}
