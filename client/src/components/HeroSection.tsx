@@ -109,8 +109,8 @@ const HeroSection = () => {
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-96 h-32 rounded-full bg-gradient-to-t from-accent/10 via-primary/5 to-transparent blur-3xl animate-blob animation-delay-4000"></div>
 
       <div className="container mx-auto relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center w-full">
-          {/* Text Content Section - Mobile में पहले दिखेगा */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-start w-full">
+          {/* Text Content Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,7 +153,7 @@ const HeroSection = () => {
               </motion.div>
 
               <motion.p
-                className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-lg font-poppins"
+                className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed max-w-lg font-poppins"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6, duration: 0.6 }}
@@ -163,32 +163,9 @@ const HeroSection = () => {
                 GadgetsFever.in and HostWithUs.site.
               </motion.p>
 
-              {/* SEO-optimized section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
-                className="mb-8 bg-card/20 backdrop-blur-sm p-3 sm:p-4 rounded-lg border border-primary/10"
-              >
-                <h3 className="text-xs sm:text-sm font-medium text-secondary mb-2">
-                  Web Developer & UI/UX Designer in India
-                </h3>
-                <p className="text-xs text-muted-foreground font-poppins">
-                  Specializing in React, Next.js, Node.js and modern web
-                  technologies. Creating beautiful, responsive and user-friendly
-                  websites with focus on performance and accessibility.
-                </p>
-                <div className="mt-2 grid grid-cols-2 gap-1 text-xs font-poppins">
-                  <div>• React/Next.js Expert</div>
-                  <div>• UI/UX Designer</div>
-                  <div>• Responsive Web Design</div>
-                  <div>• Web Performance Expert</div>
-                </div>
-              </motion.div>
-
               {/* Action buttons */}
               <motion.div
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-4 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
@@ -216,7 +193,7 @@ const HeroSection = () => {
 
               {/* Social Links */}
               <motion.div
-                className="flex justify-center md:justify-start gap-4"
+                className="flex justify-center md:justify-start gap-4 mb-6"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
@@ -250,10 +227,31 @@ const HeroSection = () => {
                   </motion.a>
                 ))}
               </motion.div>
+
+              {/* SEO-optimized section - MOVED TO BOTTOM AND MADE COMPACT */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.8 }}
+                className="bg-card/20 backdrop-blur-sm p-3 rounded-lg border border-primary/10"
+              >
+                <h3 className="text-xs font-medium text-secondary mb-1">
+                  Web Developer & UI/UX Designer in India
+                </h3>
+                <p className="text-xs text-muted-foreground font-poppins mb-2">
+                  Specializing in React, Next.js, Node.js and modern web technologies.
+                </p>
+                <div className="grid grid-cols-2 gap-1 text-xs font-poppins text-muted-foreground">
+                  <div>• React/Next.js Expert</div>
+                  <div>• UI/UX Designer</div>
+                  <div>• Responsive Design</div>
+                  <div>• Performance Expert</div>
+                </div>
+              </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Profile Image Section - Mobile में बाद में दिखेगा */}
+          {/* Profile Image Section - MOVED UP */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 100 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -337,7 +335,7 @@ const HeroSection = () => {
                 />
               </motion.div>
 
-              {/* Floating achievements - Theme-aware text */}
+              {/* Floating achievements */}
               <motion.div
                 className="absolute top-3 -left-4 bg-card/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-primary/20 z-20"
                 initial={{ opacity: 0, x: 20 }}
@@ -394,9 +392,9 @@ const HeroSection = () => {
               ))}
             </div>
 
-            {/* Achievement Stats below profile */}
+            {/* Achievement Stats below profile - MADE COMPACT */}
             <motion.div
-              className="mt-8 grid grid-cols-2 gap-4"
+              className="mt-6 grid grid-cols-2 gap-3"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.0, duration: 0.8 }}
@@ -404,14 +402,14 @@ const HeroSection = () => {
               {stats.map((stat, index) => (
                 <motion.div
                   key={stat.label}
-                  className="text-center bg-card/30 backdrop-blur-sm p-4 rounded-xl border border-border/30 hover:border-primary/40 transition-all duration-300"
+                  className="text-center bg-card/30 backdrop-blur-sm p-3 rounded-xl border border-border/30 hover:border-primary/40 transition-all duration-300"
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1.2 + index * 0.1, duration: 0.6 }}
                   whileHover={{ scale: 1.05 }}
                 >
                   <motion.div
-                    className="text-lg sm:text-xl font-bold text-primary mb-1 font-alegreya"
+                    className="text-lg font-bold text-primary mb-1 font-alegreya"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.4 + index * 0.1 }}
