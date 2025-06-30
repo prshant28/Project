@@ -125,14 +125,14 @@ const HeroSection = () => {
                 Portfolio
               </span>
 
-              {/* Mixed color heading */}
+              {/* FIXED: Theme-aware heading */}
               <motion.h1
                 className="font-alegreya font-bold text-3xl sm:text-4xl lg:text-5xl mb-2 tracking-wide uppercase leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.6 }}
               >
-                <div className="text-white">Hello, It's Me</div>
+                <div className="text-foreground">Hello, It's Me</div>
                 <div className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
                   Prashant
                 </div>
@@ -349,7 +349,7 @@ const HeroSection = () => {
               >
                 <Star className="text-primary" size={14} />
                 <div className="text-primary font-semibold text-sm">3+</div>
-                <div className="text-xs font-poppins whitespace-nowrap">
+                <div className="text-xs font-poppins whitespace-nowrap text-foreground">
                   Years Experience
                 </div>
               </motion.div>
@@ -366,7 +366,7 @@ const HeroSection = () => {
               >
                 <Trophy className="text-secondary" size={14} />
                 <div className="text-secondary font-semibold text-sm">11+</div>
-                <div className="text-xs font-poppins whitespace-nowrap">
+                <div className="text-xs font-poppins whitespace-nowrap text-foreground">
                   Projects Completed
                 </div>
               </motion.div>
@@ -446,7 +446,7 @@ const HeroSection = () => {
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <feature.icon className="text-primary" size={20} />
                 </div>
-                <h3 className="text-lg font-semibold">{feature.title}</h3>
+                <h3 className="text-lg font-semibold text-foreground">{feature.title}</h3>
               </div>
               <p className="text-muted-foreground font-poppins">
                 {feature.description}
