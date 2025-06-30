@@ -1371,4 +1371,102 @@ const ProjectsSection = () => {
               <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-500 text-transparent bg-clip-text">
                 Ready to Collaborate?
               </h3>
-              <p className="text-muted-foreground max-w
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Let's work together to bring your ideas to life. I'm always excited to take on new challenges and create something amazing.
+              </p>
+            </div>
+            
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Button
+                size="lg"
+                className="gap-3 rounded-full px-8 py-3 font-semibold shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 group"
+              >
+                <span>View All Projects</span>
+                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-3 rounded-full px-8 py-3 font-semibold border-primary/40 hover:bg-primary/10 hover:border-primary transition-all duration-300 group"
+              >
+                <Download size={18} />
+                <span>Download Resume</span>
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="gap-3 rounded-full px-8 py-3 font-semibold border-purple-500/40 hover:bg-purple-500/10 hover:border-purple-500 transition-all duration-300 group"
+              >
+                <MessageCircle size={18} />
+                <span>Let's Talk</span>
+              </Button>
+            </div>
+
+            {/* Additional Stats or Social Proof */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 1 }}
+              className="flex flex-wrap justify-center items-center gap-8 mt-8 pt-8 border-t border-muted/30"
+            >
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Users size={16} />
+                <span className="text-sm">50+ Happy Clients</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Trophy size={16} />
+                <span className="text-sm">Award Winning Projects</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Zap size={16} />
+                <span className="text-sm">Fast Delivery</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <CheckCircle size={16} />
+                <span className="text-sm">100% Satisfaction</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Custom Styles */}
+        <style jsx>{`
+          @keyframes gradient-x {
+            0%, 100% {
+              background-position: 0% 50%;
+            }
+            50% {
+              background-position: 100% 50%;
+            }
+          }
+          .animate-gradient-x {
+            animation: gradient-x 3s ease infinite;
+          }
+          .bg-300% {
+            background-size: 300% 300%;
+          }
+          .bg-grid-pattern {
+            background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+          }
+          .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        `}</style>
+      </section>
+    </TooltipProvider>
+  );
+};
+
+export default ProjectsSection;
