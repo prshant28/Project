@@ -286,14 +286,14 @@ const HeroSection = () => {
                   ))}
                 </div>
 
-                {/* Mobile Achievement Stats */}
+                {/* Mobile Achievement Stats - FIXED: Now shows all 4 stats in 2x2 grid */}
                 <motion.div
                   className="mt-4 grid grid-cols-2 gap-2"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.0, duration: 0.6 }}
                 >
-                  {stats.slice(0, 2).map((stat, index) => (
+                  {stats.map((stat, index) => (
                     <motion.div
                       key={stat.label}
                       className="text-center bg-card/30 backdrop-blur-sm p-2 rounded-lg border border-border/30 hover:border-primary/40 transition-all duration-300"
