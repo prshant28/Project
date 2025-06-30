@@ -46,23 +46,15 @@ const Navbar = () => {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    closeMobileMenu();
-  };
   
   const navLinks = [
-    { href: "#home", label: "Home", id: "home" },
-    { href: "#projects", label: "Projects", id: "projects" },
-    { href: "#skills", label: "Skills", id: "skills" },
-    { href: "#timeline", label: "Timeline", id: "timeline" },
-    { href: "#about", label: "About", id: "about" },
-    { href: "#blog", label: "Blog", id: "blog" },
-    { href: "#contact", label: "Contact", id: "contact" }
+    { href: "#home", label: "Home" },
+    { href: "#projects", label: "Projects" },
+    { href: "#skills", label: "Skills" },
+    { href: "#timeline", label: "Timeline" },
+    { href: "#about", label: "About" },
+    { href: "#blog", label: "Blog" },
+    { href: "#contact", label: "Contact" }
   ];
 
   return (
@@ -71,10 +63,10 @@ const Navbar = () => {
         ? "bg-background/90 backdrop-blur-xl shadow-md" 
         : "bg-transparent"
     }`}>
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 py-3 sm:py-4">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <nav className="flex justify-between items-center">
-          <button 
-            onClick={() => scrollToSection("home")}
+          <a 
+            href="#home" 
             className="group flex items-center gap-2 relative z-20"
           >
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 group-hover:bg-primary/30 transition-colors">
@@ -82,7 +74,7 @@ const Navbar = () => {
             </div>
             <div className="hidden xs:block">
               <span className="text-primary font-alegreya font-bold text-xl sm:text-2xl tracking-wider uppercase">
-                Prshant
+                Prashant
               </span>
               <span className="text-foreground font-alegreya text-xs sm:text-sm tracking-widest block -mt-1">.developer</span>
             </div>
@@ -91,21 +83,21 @@ const Navbar = () => {
                 P.dev
               </span>
             </div>
-          </button>
+          </a>
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map(link => (
-              <button 
+              <a 
                 key={link.href}
-                onClick={() => scrollToSection(link.id)}
+                href={link.href} 
                 className={`font-alegreya py-2 px-4 rounded-md uppercase tracking-wider text-sm relative group ${
-                  activeSection === link.id 
+                  activeSection === link.href.substring(1) 
                     ? "text-primary" 
                     : "text-foreground/80 hover:text-primary"
                 }`}
               >
-                {activeSection === link.id && (
+                {activeSection === link.href.substring(1) && (
                   <motion.span 
                     layoutId="navIndicator"
                     className="absolute inset-0 bg-primary/10 rounded-md -z-10"
@@ -114,17 +106,17 @@ const Navbar = () => {
                 )}
                 {link.label}
                 <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-primary"></span>
-              </button>
+              </a>
             ))}
             
             <div className="ml-4 flex items-center gap-4 pl-4 border-l border-muted">
               <ThemeToggle />
-              <button 
-                onClick={() => scrollToSection("contact")}
+              <a 
+                href="#contact" 
                 className="bg-primary/80 hover:bg-primary text-white py-2 px-5 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-1 shadow-lg shadow-primary/20"
               >
                 Hire Me <ChevronRight size={14} />
-              </button>
+              </a>
             </div>
           </div>
           
@@ -156,7 +148,7 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            className="md:hidden fixed inset-0 pt-20 px-4 pb-10 bg-background/95 backdrop-blur-lg z-10 flex flex-col justify-between w-full max-w-none"
+            className="md:hidden fixed inset-0 pt-20 px-6 pb-10 bg-background/95 backdrop-blur-lg z-10 flex flex-col justify-between"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -164,17 +156,18 @@ const Navbar = () => {
           >
             <div className="flex flex-col">
               {navLinks.map((link, index) => (
-                <motion.button 
+                <motion.a 
                   key={link.href} 
-                  onClick={() => scrollToSection(link.id)}
-                  className="font-alegreya py-4 text-2xl font-medium uppercase tracking-wider border-b border-muted flex justify-between items-center text-left"
+                  href={link.href} 
+                  className="font-alegreya py-4 text-2xl font-medium uppercase tracking-wider border-b border-muted flex justify-between items-center"
+                  onClick={closeMobileMenu}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.3 }}
                 >
                   {link.label}
                   <ChevronRight size={18} className="text-primary" />
-                </motion.button>
+                </motion.a>
               ))}
             </div>
             
@@ -184,12 +177,13 @@ const Navbar = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.3 }}
             >
-              <button 
-                onClick={() => scrollToSection("contact")}
+              <a 
+                href="#contact" 
                 className="w-full bg-primary text-white py-3 px-6 rounded-full text-lg font-medium flex items-center justify-center gap-2 shadow-lg"
+                onClick={closeMobileMenu}
               >
                 Get In Touch <ChevronRight size={18} />
-              </button>
+              </a>
               <div className="mt-6 text-center text-muted-foreground">
                 <p className="font-alegreya">&copy; {new Date().getFullYear()} Prashant.dev</p>
                 <p className="text-sm mt-1">UI/UX Designer & Full Stack Developer</p>
