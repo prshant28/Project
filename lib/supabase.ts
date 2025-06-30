@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Get Supabase credentials from environment variables
-// In Vite, client-side env vars must be prefixed with VITE_
-// In Node.js server-side, use regular process.env
+// In Vite client-side, use import.meta.env
+// In Node.js server-side, use process.env
 const supabaseUrl = typeof window !== 'undefined' 
   ? import.meta.env.VITE_SUPABASE_URL 
   : process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
