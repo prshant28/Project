@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 import {
   Form,
   FormControl,
@@ -58,32 +59,43 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+      // Direct Supabase insert - no backend API needed
+      const { data: result, error } = await supabase
+        .from('contact_messages')
+        .insert([
+          {
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message,
+            is_read: false,
+            created_at: new Date().toISOString()
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      toast({
+        title: "Message sent successfully! 🎉",
+        description: "Thanks for reaching out, I'll get back to you soon.",
+        variant: "default",
       });
 
-      const result = await response.json();
+      form.reset();
+      
+      // Optional: Log success for debugging
+      console.log("Message sent successfully:", result);
 
-      if (response.ok && result.success) {
-        toast({
-          title: "Message sent successfully!",
-          description: "Thanks for reaching out, I'll get back to you soon.",
-          variant: "default",
-        });
-
-        form.reset();
-      } else {
-        throw new Error(result.message || "Failed to send message");
-      }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Contact form error:", error);
+      
       toast({
-        title: "Failed to send message",
-        description: "Please try again later or contact me directly via email.",
+        title: "Failed to send message ❌",
+        description: error.message || "Please try again later or contact me directly via email.",
         variant: "destructive",
       });
     } finally {
@@ -334,7 +346,7 @@ const ContactSection = () => {
                     {isSubmitting ? (
                       <>
                         <Loader2 size={16} className="animate-spin" />
-                        Sending...
+                        Sending Message...
                       </>
                     ) : (
                       <>
