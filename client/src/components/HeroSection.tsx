@@ -109,7 +109,7 @@ const HeroSection = () => {
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-96 h-32 rounded-full bg-gradient-to-t from-accent/10 via-primary/5 to-transparent blur-3xl animate-blob animation-delay-4000"></div>
 
       <div className="container mx-auto relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-start w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center w-full">
           {/* Text Content Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -150,6 +150,67 @@ const HeroSection = () => {
                 <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text font-semibold">
                   <TypingEffect texts={typingTexts} />
                 </span>
+              </motion.div>
+
+              {/* MOBILE ONLY: Profile Image - Shows only on mobile */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="md:hidden relative mb-6"
+              >
+                <div className="relative max-w-xs mx-auto">
+                  {/* Simplified background for mobile */}
+                  <motion.div
+                    className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-2xl"
+                    animate={{
+                      rotate: [0, 360],
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.5, 0.3],
+                    }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+
+                  {/* Profile image container */}
+                  <motion.div
+                    className="relative z-10 rounded-full overflow-hidden border-3 border-primary/40 shadow-xl shadow-primary/20"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <motion.img
+                      src={profileImage}
+                      alt="Prashant - Full-Stack Developer & AI Expert"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+
+                  {/* Mobile floating achievements - compact */}
+                  <motion.div
+                    className="absolute top-2 -left-3 bg-card/90 backdrop-blur-md p-2 rounded-lg shadow-lg flex items-center gap-1 border border-primary/20 z-20"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5, duration: 0.5 }}
+                  >
+                    <Star className="text-primary" size={12} />
+                    <div className="text-primary font-semibold text-xs">3+</div>
+                    <div className="text-xs font-poppins text-foreground">Years</div>
+                  </motion.div>
+
+                  <motion.div
+                    className="absolute bottom-2 -right-3 bg-card/90 backdrop-blur-md p-2 rounded-lg shadow-lg flex items-center gap-1 border border-secondary/20 z-20"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8, duration: 0.5 }}
+                  >
+                    <Trophy className="text-secondary" size={12} />
+                    <div className="text-secondary font-semibold text-xs">11+</div>
+                    <div className="text-xs font-poppins text-foreground">Projects</div>
+                  </motion.div>
+                </div>
               </motion.div>
 
               <motion.p
@@ -228,7 +289,7 @@ const HeroSection = () => {
                 ))}
               </motion.div>
 
-              {/* SEO-optimized section - MOVED TO BOTTOM AND MADE COMPACT */}
+              {/* SEO-optimized section - compact */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -251,12 +312,12 @@ const HeroSection = () => {
             </motion.div>
           </motion.div>
 
-          {/* Profile Image Section - MOVED UP */}
+          {/* DESKTOP ONLY: Profile Image Section - Shows only on desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 100 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="order-2 md:order-2 relative"
+            className="hidden md:block relative"
           >
             <div className="relative max-w-md mx-auto">
               {/* Multiple animated background layers */}
@@ -335,7 +396,7 @@ const HeroSection = () => {
                 />
               </motion.div>
 
-              {/* Floating achievements */}
+              {/* Desktop floating achievements */}
               <motion.div
                 className="absolute top-3 -left-4 bg-card/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-primary/20 z-20"
                 initial={{ opacity: 0, x: 20 }}
@@ -392,7 +453,7 @@ const HeroSection = () => {
               ))}
             </div>
 
-            {/* Achievement Stats below profile - MADE COMPACT */}
+            {/* Achievement Stats below profile - Desktop only */}
             <motion.div
               className="mt-6 grid grid-cols-2 gap-3"
               initial={{ opacity: 0, y: 40 }}
