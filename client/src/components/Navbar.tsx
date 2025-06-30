@@ -46,66 +46,58 @@ const Navbar = () => {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    closeMobileMenu();
-  };
   
   const navLinks = [
-    { href: "#home", label: "Home", id: "home" },
-    { href: "#projects", label: "Projects", id: "projects" },
-    { href: "#skills", label: "Skills", id: "skills" },
-    { href: "#timeline", label: "Timeline", id: "timeline" },
-    { href: "#about", label: "About", id: "about" },
-    { href: "#blog", label: "Blog", id: "blog" },
-    { href: "#contact", label: "Contact", id: "contact" }
+    { href: "#home", label: "Home" },
+    { href: "#projects", label: "Projects" },
+    { href: "#skills", label: "Skills" },
+    { href: "#timeline", label: "Timeline" },
+    { href: "#about", label: "About" },
+    { href: "#blog", label: "Blog" },
+    { href: "#contact", label: "Contact" }
   ];
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled || mobileMenuOpen
-        ? "bg-background/95 backdrop-blur-xl shadow-lg border-b border-border/50" 
+      isScrolled 
+        ? "bg-background/90 backdrop-blur-xl shadow-md" 
         : "bg-transparent"
     }`}>
-      <div className="container mx-auto max-w-7xl px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
         <nav className="flex justify-between items-center">
-          <button 
-            onClick={() => scrollToSection("home")}
+          <a 
+            href="#home" 
             className="group flex items-center gap-2 relative z-20"
           >
-            <div className="w-7 h-7 xs:w-8 xs:h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 group-hover:bg-primary/30 transition-colors">
-              <Code size={14} className="xs:w-4 xs:h-4 sm:w-[18px] sm:h-[18px] text-primary" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30 group-hover:bg-primary/30 transition-colors">
+              <Code size={16} className="sm:w-[18px] sm:h-[18px] text-primary" />
             </div>
             <div className="hidden xs:block">
-              <span className="text-primary font-alegreya font-bold text-lg xs:text-xl sm:text-2xl tracking-wider uppercase">
-                Prshant
+              <span className="text-primary font-alegreya font-bold text-xl sm:text-2xl tracking-wider uppercase">
+                Prashant
               </span>
               <span className="text-foreground font-alegreya text-xs sm:text-sm tracking-widest block -mt-1">.developer</span>
             </div>
             <div className="block xs:hidden">
-              <span className="text-primary font-alegreya font-bold text-base tracking-wider uppercase">
+              <span className="text-primary font-alegreya font-bold text-lg tracking-wider uppercase">
                 P.dev
               </span>
             </div>
-          </button>
+          </a>
           
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1">
             {navLinks.map(link => (
-              <button 
+              <a 
                 key={link.href}
-                onClick={() => scrollToSection(link.id)}
-                className={`font-alegreya py-2 px-3 xl:px-4 rounded-md uppercase tracking-wider text-sm relative group transition-colors duration-200 ${
-                  activeSection === link.id 
+                href={link.href} 
+                className={`font-alegreya py-2 px-4 rounded-md uppercase tracking-wider text-sm relative group ${
+                  activeSection === link.href.substring(1) 
                     ? "text-primary" 
                     : "text-foreground/80 hover:text-primary"
                 }`}
               >
-                {activeSection === link.id && (
+                {activeSection === link.href.substring(1) && (
                   <motion.span 
                     layoutId="navIndicator"
                     className="absolute inset-0 bg-primary/10 rounded-md -z-10"
@@ -114,59 +106,25 @@ const Navbar = () => {
                 )}
                 {link.label}
                 <span className="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-primary"></span>
-              </button>
+              </a>
             ))}
             
-            <div className="ml-3 xl:ml-4 flex items-center gap-3 xl:gap-4 pl-3 xl:pl-4 border-l border-muted">
+            <div className="ml-4 flex items-center gap-4 pl-4 border-l border-muted">
               <ThemeToggle />
-              <button 
-                onClick={() => scrollToSection("contact")}
-                className="bg-primary/90 hover:bg-primary text-white py-2 px-4 xl:px-5 rounded-full text-sm font-alegreya font-medium transition-all duration-300 flex items-center gap-1 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-105 tracking-wide uppercase"
+              <a 
+                href="#contact" 
+                className="bg-primary/80 hover:bg-primary text-white py-2 px-5 rounded-full text-sm font-medium transition-colors duration-300 flex items-center gap-1 shadow-lg shadow-primary/20"
               >
                 Hire Me <ChevronRight size={14} />
-              </button>
-            </div>
-          </div>
-          
-          {/* Tablet Menu (md to lg) */}
-          <div className="hidden md:flex lg:hidden items-center gap-1">
-            {navLinks.slice(0, 4).map(link => (
-              <button 
-                key={link.href}
-                onClick={() => scrollToSection(link.id)}
-                className={`font-alegreya py-2 px-2 rounded-md uppercase tracking-wider text-xs relative group transition-colors duration-200 ${
-                  activeSection === link.id 
-                    ? "text-primary" 
-                    : "text-foreground/80 hover:text-primary"
-                }`}
-              >
-                {activeSection === link.id && (
-                  <motion.span 
-                    layoutId="tabletNavIndicator"
-                    className="absolute inset-0 bg-primary/10 rounded-md -z-10"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-                {link.label}
-              </button>
-            ))}
-            
-            <div className="ml-2 flex items-center gap-2 pl-2 border-l border-muted">
-              <ThemeToggle />
-              <button 
-                onClick={() => scrollToSection("contact")}
-                className="bg-primary/90 hover:bg-primary text-white py-1.5 px-3 rounded-full text-xs font-alegreya font-medium transition-all duration-300 flex items-center gap-1 shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:scale-105 tracking-wide uppercase"
-              >
-                Hire <ChevronRight size={12} />
-              </button>
+              </a>
             </div>
           </div>
           
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-3">
+          <div className="md:hidden flex items-center gap-4">
             <ThemeToggle />
             <button 
-              className="text-foreground relative z-20 w-9 h-9 flex items-center justify-center rounded-lg hover:bg-primary/10 transition-colors" 
+              className="text-foreground relative z-20 w-10 h-10 flex items-center justify-center" 
               onClick={toggleMobileMenu}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
@@ -179,104 +137,59 @@ const Navbar = () => {
                 }}
                 transition={{ duration: 0.2 }}
               >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </motion.div>
             </button>
           </div>
         </nav>
       </div>
       
-      {/* Mobile Menu with proper scrolling and background */}
+      {/* Mobile Menu with AnimatePresence for smooth animations */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              className="md:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+          <motion.div 
+            className="md:hidden fixed inset-0 pt-20 px-6 pb-10 bg-background/95 backdrop-blur-lg z-10 flex flex-col justify-between"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex flex-col">
+              {navLinks.map((link, index) => (
+                <motion.a 
+                  key={link.href} 
+                  href={link.href} 
+                  className="font-alegreya py-4 text-2xl font-medium uppercase tracking-wider border-b border-muted flex justify-between items-center"
+                  onClick={closeMobileMenu}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.3 }}
+                >
+                  {link.label}
+                  <ChevronRight size={18} className="text-primary" />
+                </motion.a>
+              ))}
+            </div>
+            
+            <motion.div 
+              className="mt-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              onClick={closeMobileMenu}
-            />
-            
-            {/* Mobile Menu */}
-            <motion.div 
-              className="md:hidden fixed top-0 right-0 h-full w-full max-w-sm bg-background/98 backdrop-blur-xl shadow-2xl border-l border-border/50 z-50 flex flex-col"
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              transition={{ delay: 0.4, duration: 0.3 }}
             >
-              {/* Mobile Menu Header */}
-              <div className="flex items-center justify-between p-4 border-b border-border/30">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30">
-                    <Code size={16} className="text-primary" />
-                  </div>
-                  <div>
-                    <span className="text-primary font-alegreya font-bold text-lg tracking-wider uppercase">
-                      Prshant
-                    </span>
-                    <span className="text-foreground font-alegreya text-xs tracking-widest block -mt-1">.dev</span>
-                  </div>
-                </div>
-                <button 
-                  onClick={closeMobileMenu}
-                  className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-primary/10 transition-colors"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-              
-              {/* Scrollable Navigation Links */}
-              <div className="flex-1 overflow-y-auto py-4">
-                <div className="px-4 space-y-1">
-                  {navLinks.map((link, index) => (
-                    <motion.button 
-                      key={link.href} 
-                      onClick={() => scrollToSection(link.id)}
-                      className={`w-full font-alegreya py-3 px-4 text-left rounded-lg uppercase tracking-wider text-base font-medium transition-all duration-200 flex justify-between items-center group ${
-                        activeSection === link.id 
-                          ? "bg-primary/10 text-primary border border-primary/20" 
-                          : "text-foreground/80 hover:text-primary hover:bg-primary/5"
-                      }`}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                      whileHover={{ x: 4 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <span>{link.label}</span>
-                      <ChevronRight size={16} className={`transition-transform group-hover:translate-x-1 ${
-                        activeSection === link.id ? "text-primary" : "text-muted-foreground"
-                      }`} />
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Mobile Menu Footer */}
-              <motion.div 
-                className="p-4 border-t border-border/30 space-y-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
+              <a 
+                href="#contact" 
+                className="w-full bg-primary text-white py-3 px-6 rounded-full text-lg font-medium flex items-center justify-center gap-2 shadow-lg"
+                onClick={closeMobileMenu}
               >
-                <button 
-                  onClick={() => scrollToSection("contact")}
-                  className="w-full bg-primary hover:bg-primary/90 text-white py-3 px-6 rounded-xl text-base font-alegreya font-medium flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all duration-300 hover:shadow-primary/30 hover:scale-[1.02] tracking-wide uppercase"
-                >
-                  Hire Me <ChevronRight size={18} />
-                </button>
-                
-                <div className="text-center text-muted-foreground">
-                  <p className="font-alegreya text-sm">&copy; {new Date().getFullYear()} Prashant.dev</p>
-                  <p className="text-xs mt-1">UI/UX Designer & Full Stack Developer</p>
-                </div>
-              </motion.div>
+                Get In Touch <ChevronRight size={18} />
+              </a>
+              <div className="mt-6 text-center text-muted-foreground">
+                <p className="font-alegreya">&copy; {new Date().getFullYear()} Prashant.dev</p>
+                <p className="text-sm mt-1">UI/UX Designer & Full Stack Developer</p>
+              </div>
             </motion.div>
-          </>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
