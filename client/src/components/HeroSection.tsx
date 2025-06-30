@@ -152,7 +152,7 @@ const HeroSection = () => {
                 </span>
               </motion.div>
 
-              {/* MOBILE ONLY: Profile Image - Shows only on mobile */}
+              {/* MOBILE ONLY: Profile Image - Shows only on mobile with FULL ANIMATIONS */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -160,13 +160,13 @@ const HeroSection = () => {
                 className="md:hidden relative mb-6"
               >
                 <div className="relative max-w-xs mx-auto">
-                  {/* Simplified background for mobile */}
+                  {/* Multiple animated background layers for mobile */}
                   <motion.div
-                    className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-2xl"
+                    className="absolute -inset-6 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-3xl"
                     animate={{
                       rotate: [0, 360],
-                      scale: [1, 1.1, 1],
-                      opacity: [0.3, 0.5, 0.3],
+                      scale: [1, 1.2, 1],
+                      opacity: [0.3, 0.6, 0.3],
                     }}
                     transition={{
                       duration: 20,
@@ -175,25 +175,74 @@ const HeroSection = () => {
                     }}
                   />
 
-                  {/* Profile image container */}
                   <motion.div
-                    className="relative z-10 rounded-full overflow-hidden border-3 border-primary/40 shadow-xl shadow-primary/20"
+                    className="absolute -inset-4 bg-gradient-to-l from-secondary/25 via-primary/25 to-accent/25 rounded-full blur-2xl"
+                    animate={{
+                      rotate: [360, 0],
+                      scale: [1.1, 0.9, 1.1],
+                    }}
+                    transition={{
+                      duration: 15,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  />
+
+                  {/* Mobile orbital rings */}
+                  <motion.div
+                    className="absolute -inset-2 border-2 border-primary/20 rounded-full"
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                  />
+
+                  <motion.div
+                    className="absolute -inset-3 border border-secondary/15 rounded-full border-dashed"
+                    animate={{ rotate: [360, 0] }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                  />
+
+                  {/* Profile image container with enhanced mobile animations */}
+                  <motion.div
+                    className="relative z-10 rounded-full overflow-hidden border-3 border-primary/40 shadow-2xl shadow-primary/30"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
+                    animate={{
+                      boxShadow: [
+                        "0 20px 40px -12px rgba(var(--primary), 0.25)",
+                        "0 20px 40px -12px rgba(var(--secondary), 0.25)",
+                        "0 20px 40px -12px rgba(var(--primary), 0.25)",
+                      ],
+                    }}
+                    transition={{
+                      boxShadow: { duration: 4, repeat: Infinity },
+                      hover: { duration: 0.3 },
+                    }}
                   >
                     <motion.img
                       src={profileImage}
                       alt="Prashant - Full-Stack Developer & AI Expert"
                       className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.4 }}
+                    />
+
+                    {/* Mobile hover overlay effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20 opacity-0"
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
                     />
                   </motion.div>
 
-                  {/* Mobile floating achievements - compact */}
+                  {/* Mobile floating achievements - with animations */}
                   <motion.div
                     className="absolute top-2 -left-3 bg-card/90 backdrop-blur-md p-2 rounded-lg shadow-lg flex items-center gap-1 border border-primary/20 z-20"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0 8px 25px -8px rgba(var(--primary), 0.3)",
+                    }}
                   >
                     <Star className="text-primary" size={12} />
                     <div className="text-primary font-semibold text-xs">3+</div>
@@ -205,12 +254,68 @@ const HeroSection = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.8, duration: 0.5 }}
+                    whileHover={{
+                      scale: 1.05,
+                      boxShadow: "0 8px 25px -8px rgba(var(--secondary), 0.3)",
+                    }}
                   >
                     <Trophy className="text-secondary" size={12} />
                     <div className="text-secondary font-semibold text-xs">11+</div>
                     <div className="text-xs font-poppins text-foreground">Projects</div>
                   </motion.div>
+
+                  {/* Mobile decorative floating elements */}
+                  {[...Array(4)].map((_, index) => (
+                    <motion.div
+                      key={index}
+                      className="absolute w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary opacity-60"
+                      style={{
+                        top: `${25 + index * 15}%`,
+                        right: `${-8 + (index % 2) * 4}%`,
+                      }}
+                      animate={{
+                        y: [0, -8, 0],
+                        opacity: [0.6, 1, 0.6],
+                      }}
+                      transition={{
+                        duration: 2 + index * 0.3,
+                        repeat: Infinity,
+                        delay: index * 0.2,
+                      }}
+                    />
+                  ))}
                 </div>
+
+                {/* Mobile Achievement Stats */}
+                <motion.div
+                  className="mt-4 grid grid-cols-2 gap-2"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.0, duration: 0.6 }}
+                >
+                  {stats.slice(0, 2).map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      className="text-center bg-card/30 backdrop-blur-sm p-2 rounded-lg border border-border/30 hover:border-primary/40 transition-all duration-300"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 1.2 + index * 0.1, duration: 0.5 }}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <motion.div
+                        className="text-sm font-bold text-primary mb-1 font-alegreya"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.4 + index * 0.1 }}
+                      >
+                        {stat.value}
+                      </motion.div>
+                      <div className="text-xs text-muted-foreground font-poppins uppercase tracking-wide">
+                        {stat.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </motion.div>
 
               <motion.p
