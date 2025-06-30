@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
 import {
   Form,
   FormControl,
@@ -25,6 +24,7 @@ import {
   Twitter,
   Dribbble,
   Send,
+  Loader2,
 } from "lucide-react";
 
 const formSchema = z.object({
@@ -58,16 +58,29 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      await apiRequest("POST", "/api/contact", data);
-
-      toast({
-        title: "Message sent successfully!",
-        description: "Thanks for reaching out, I'll get back to you soon.",
-        variant: "default",
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
 
-      form.reset();
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        toast({
+          title: "Message sent successfully!",
+          description: "Thanks for reaching out, I'll get back to you soon.",
+          variant: "default",
+        });
+
+        form.reset();
+      } else {
+        throw new Error(result.message || "Failed to send message");
+      }
     } catch (error) {
+      console.error("Contact form error:", error);
       toast({
         title: "Failed to send message",
         description: "Please try again later or contact me directly via email.",
@@ -76,6 +89,18 @@ const ContactSection = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleSocialClick = (platform: string, url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = "mailto:hello@prashant.dev";
+  };
+
+  const handlePhoneClick = () => {
+    window.location.href = "tel:+917618078806";
   };
 
   return (
@@ -133,7 +158,12 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h5 className="text-lg font-medium mb-1">Email</h5>
-                  <p className="text-muted-foreground">hello@prashant.dev</p>
+                  <button
+                    onClick={handleEmailClick}
+                    className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                  >
+                    hello@prashant.dev
+                  </button>
                 </div>
               </div>
 
@@ -143,7 +173,12 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h5 className="text-lg font-medium mb-1">Phone</h5>
-                  <p className="text-muted-foreground">+91 76180 78806</p>
+                  <button
+                    onClick={handlePhoneClick}
+                    className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+                  >
+                    +91 76180 78806
+                  </button>
                 </div>
               </div>
 
@@ -163,30 +198,34 @@ const ContactSection = () => {
                 Connect With Me
               </h4>
               <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon"
+                <button
+                  onClick={() => handleSocialClick("GitHub", "https://github.com/prashantmaurya19")}
+                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon hover:bg-primary hover:text-white transition-all duration-300"
+                  aria-label="GitHub Profile"
                 >
                   <Github size={18} />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon"
+                </button>
+                <button
+                  onClick={() => handleSocialClick("LinkedIn", "https://linkedin.com/in/prashant-maurya-dev")}
+                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon hover:bg-primary hover:text-white transition-all duration-300"
+                  aria-label="LinkedIn Profile"
                 >
                   <Linkedin size={18} />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon"
+                </button>
+                <button
+                  onClick={() => handleSocialClick("Twitter", "https://twitter.com/prashant_dev19")}
+                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon hover:bg-primary hover:text-white transition-all duration-300"
+                  aria-label="Twitter Profile"
                 >
                   <Twitter size={18} />
-                </a>
-                <a
-                  href="#"
-                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon"
+                </button>
+                <button
+                  onClick={() => handleSocialClick("Portfolio", "https://x247.site")}
+                  className="w-10 h-10 rounded-full bg-muted flex items-center justify-center social-icon hover:bg-primary hover:text-white transition-all duration-300"
+                  aria-label="Portfolio Website"
                 >
                   <Dribbble size={18} />
-                </a>
+                </button>
               </div>
             </div>
           </motion.div>
@@ -219,6 +258,7 @@ const ContactSection = () => {
                               placeholder="John Doe"
                               {...field}
                               className="bg-muted border-muted focus-visible:ring-primary"
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
@@ -238,6 +278,7 @@ const ContactSection = () => {
                               type="email"
                               {...field}
                               className="bg-muted border-muted focus-visible:ring-primary"
+                              disabled={isSubmitting}
                             />
                           </FormControl>
                           <FormMessage />
@@ -257,6 +298,7 @@ const ContactSection = () => {
                             placeholder="Project Inquiry"
                             {...field}
                             className="bg-muted border-muted focus-visible:ring-primary"
+                            disabled={isSubmitting}
                           />
                         </FormControl>
                         <FormMessage />
@@ -276,6 +318,7 @@ const ContactSection = () => {
                             rows={5}
                             {...field}
                             className="bg-muted border-muted focus-visible:ring-primary resize-none"
+                            disabled={isSubmitting}
                           />
                         </FormControl>
                         <FormMessage />
@@ -288,7 +331,16 @@ const ContactSection = () => {
                     className="w-full gap-2"
                     disabled={isSubmitting}
                   >
-                    Send Message <Send size={16} />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message <Send size={16} />
+                      </>
+                    )}
                   </Button>
                 </form>
               </Form>

@@ -64,6 +64,26 @@ const HeroSection = () => {
     }
   };
 
+  // Download CV function
+  const downloadCV = () => {
+    // Create a temporary link to download CV
+    const link = document.createElement('a');
+    link.href = '/cv/Prashant_Maurya_CV.pdf'; // You'll need to add this file to public folder
+    link.download = 'Prashant_Maurya_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Social media handlers
+  const handleSocialClick = (platform: string, url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleEmailClick = () => {
+    window.location.href = "mailto:hello@prashant.dev";
+  };
+
   // Animated particles - using fixed positioning instead of scroll-based
   const particles = Array.from({ length: 15 }).map((_, i) => ({
     size: Math.random() * 6 + 3,
@@ -185,7 +205,7 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* Action buttons - UPDATED VIEW WORK BUTTON */}
+              {/* Action buttons - UPDATED WITH WORKING FUNCTIONALITY */}
               <motion.div
                 className="flex flex-col sm:flex-row gap-4 mb-8"
                 initial={{ opacity: 0, y: 20 }}
@@ -194,6 +214,7 @@ const HeroSection = () => {
               >
                 <Button
                   size="lg"
+                  onClick={downloadCV}
                   className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 flex items-center gap-2 group"
                 >
                   <Download size={18} className="group-hover:animate-bounce" />
@@ -213,7 +234,7 @@ const HeroSection = () => {
                 </Button>
               </motion.div>
 
-              {/* Social Links */}
+              {/* Social Links - UPDATED WITH WORKING FUNCTIONALITY */}
               <motion.div
                 className="flex justify-center md:justify-start gap-4"
                 initial={{ opacity: 0, y: 20 }}
@@ -221,32 +242,35 @@ const HeroSection = () => {
                 transition={{ delay: 1, duration: 0.6 }}
               >
                 {[
-                  { icon: Github, href: "https://github.com", label: "GitHub" },
+                  { 
+                    icon: Github, 
+                    href: "https://github.com/prashantmaurya19", 
+                    label: "GitHub" 
+                  },
                   {
                     icon: Linkedin,
-                    href: "https://linkedin.com",
+                    href: "https://linkedin.com/in/prashant-maurya-dev",
                     label: "LinkedIn",
                   },
                   {
                     icon: Mail,
-                    href: "mailto:contact@prashant.dev",
+                    href: "mailto:hello@prashant.dev",
                     label: "Email",
                   },
                 ].map((social, index) => (
-                  <motion.a
+                  <motion.button
                     key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="social-icon w-12 h-12 rounded-full bg-card/50 backdrop-blur-sm border border-border flex items-center justify-center hover:border-primary hover:shadow-lg hover:shadow-primary/20"
+                    onClick={() => social.label === "Email" ? handleEmailClick() : handleSocialClick(social.label, social.href)}
+                    className="social-icon w-12 h-12 rounded-full bg-card/50 backdrop-blur-sm border border-border flex items-center justify-center hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
+                    aria-label={social.label}
                   >
                     <social.icon size={18} />
-                  </motion.a>
+                  </motion.button>
                 ))}
               </motion.div>
             </motion.div>

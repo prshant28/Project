@@ -4,6 +4,14 @@ import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blogPosts";
 
 const BlogSection = () => {
+  const handleBlogClick = (url: string) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const handleViewAllClick = () => {
+    window.open("https://gadgetsfever.in", "_blank", "noopener,noreferrer");
+  };
+
   return (
     <section id="blog" className="py-20 w-full">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -49,13 +57,15 @@ const BlogSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-card rounded-xl overflow-hidden shadow-lg"
+              className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+              onClick={() => handleBlogClick(post.url)}
+              whileHover={{ y: -5 }}
             >
               <div className="h-48 overflow-hidden">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
               <div className="p-6">
@@ -67,25 +77,27 @@ const BlogSection = () => {
                     <Tag size={14} /> {post.category}
                   </span>
                 </div>
-                <h4 className="font-poppins font-semibold text-xl mb-3">
+                <h4 className="font-poppins font-semibold text-xl mb-3 group-hover:text-primary transition-colors">
                   {post.title}
                 </h4>
                 <p className="text-muted-foreground mb-4 line-clamp-2">
                   {post.excerpt}
                 </p>
-                <a
-                  href={post.url}
-                  className="text-primary hover:text-primary/80 transition-colors flex items-center text-sm gap-1"
-                >
-                  Read More <ArrowRight size={14} />
-                </a>
+                <div className="text-primary hover:text-primary/80 transition-colors flex items-center text-sm gap-1 font-medium">
+                  Read More <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="gap-2">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            className="gap-2 hover:bg-primary hover:text-white transition-all duration-300"
+            onClick={handleViewAllClick}
+          >
             View All Articles <ArrowRight size={16} />
           </Button>
         </div>

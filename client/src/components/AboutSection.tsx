@@ -114,7 +114,7 @@ const AboutSection = () => {
 
   const achievements = [
     {
-      title: "Rank 2 Global WinnerIn Hostinger Hackathon",
+      title: "Rank 2 Global Winner In Hostinger Hackathon",
       event: "Horizon App Hackathon 2025",
       description: "Achieved 2nd position globally among 10,000+ participants",
       icon: Trophy,
@@ -180,6 +180,23 @@ const AboutSection = () => {
       type: "achievement",
     },
   ];
+
+  // Button handlers
+  const scrollToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const downloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/cv/Prashant_Maurya_CV.pdf';
+    link.download = 'Prashant_Maurya_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <section
@@ -544,7 +561,7 @@ const AboutSection = () => {
               </p>
             </motion.div>
 
-            {/* Action Buttons */}
+            {/* Action Buttons - UPDATED WITH WORKING FUNCTIONALITY */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -554,6 +571,7 @@ const AboutSection = () => {
             >
               <Button
                 size="lg"
+                onClick={scrollToContact}
                 className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 flex items-center gap-2 group"
               >
                 <Users size={18} className="group-hover:animate-pulse" />
@@ -566,6 +584,7 @@ const AboutSection = () => {
               <Button
                 variant="outline"
                 size="lg"
+                onClick={downloadCV}
                 className="border-primary text-primary hover:bg-primary hover:text-white flex items-center gap-2 group"
               >
                 <Download size={18} className="group-hover:animate-bounce" />
