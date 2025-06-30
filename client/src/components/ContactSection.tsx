@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { apiRequest } from "@/lib/queryClient";
 import {
   Form,
   FormControl,
@@ -59,25 +59,19 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-      // Direct Supabase insert - no backend API needed
-      const { data: result, error } = await supabase
-        .from('contact_messages')
-        .insert([
-          {
-            name: data.name,
-            email: data.email,
-            subject: data.subject,
-            message: data.message,
-            is_read: false,
-            created_at: new Date().toISOString()
-          }
-        ])
-        .select()
-        .single();
-
-      if (error) {
-        throw error;
-      }
+      // Use backend API endpoint instead of direct Supabase insertion
+      const result = await apiRequest("/api/contact", {
+        method: "POST",
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       toast({
         title: "Message sent successfully! 🎉",
