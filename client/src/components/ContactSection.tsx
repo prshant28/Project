@@ -88,7 +88,7 @@ const ContactSection = () => {
       console.error("Contact form error:", error);
       
       toast({
-        title: "Failed to send message ❌",
+        title: "Failed to send message ",
         description: error.message || "Please try again later or contact me directly via email.",
         variant: "destructive",
       });
