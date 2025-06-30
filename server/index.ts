@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
+import { registerSupabaseRoutes } from "./routes-supabase";
 import { setupVite, serveStatic } from "./vite";
 import { createServer } from "http";
 
@@ -51,7 +51,8 @@ app.use((req, res, next) => {
     next();
   });
 
-  registerRoutes(app);
+  // Register Supabase routes instead of direct SQL routes
+  await registerSupabaseRoutes(app);
 
   const { PORT = 5000 } = process.env;
 
