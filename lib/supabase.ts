@@ -1,23 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Get Supabase credentials from environment variables
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// In Vite, client-side env vars must be prefixed with VITE_
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
-    'Missing Supabase environment variables. Please check your .env file.'
+    'Missing Supabase environment variables. Please check your .env file and ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.'
   );
 }
 
 // Client for public operations (uses anon key)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Admin client for server-side operations (uses service role key)
-export const supabaseAdmin = supabaseServiceRoleKey 
-  ? createClient(supabaseUrl, supabaseServiceRoleKey)
-  : null;
 
 // Helper function to handle Supabase errors
 export function handleSupabaseError(error: any) {
@@ -96,5 +91,16 @@ export interface Statistic {
   years_experience: number;
   happy_clients: number;
   technologies_mastered: number;
+  updated_at: string;
+}
+
+export interface User {
+  id: number;
+  username: string;
+  password: string;
+  full_name?: string;
+  email?: string;
+  role?: string;
+  created_at: string;
   updated_at: string;
 }
