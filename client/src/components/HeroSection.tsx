@@ -18,13 +18,17 @@ import profileImage from "../assets/profile-new.png";
 
 const HeroSection = () => {
   // Texts for the typing effect
-  const typingTexts = [
-    "Full-Stack Developer",
-    "AI Tools Expert",
-    "Founder & CEO",
-    "Tech Innovator",
-    "Solutions Architect",
-  ];
+const typingTexts = [
+  "Full-Stack Developer",
+  "AI Tools Expert", 
+  "Founder & CEO",
+  "Tech Innovator",
+  "Solutions Architect",
+  "Creative Thinker",
+  "UI/UX Designer", 
+  "Brand Strategist",
+  "Frontend Developer"
+];
 
   // Features/services grid items
   const features = [
