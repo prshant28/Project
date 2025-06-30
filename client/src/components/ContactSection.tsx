@@ -59,6 +59,11 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
+      // Check if Supabase is available
+      if (!supabase) {
+        throw new Error('Contact form is temporarily unavailable. Please email me directly at hello@prashant.dev');
+      }
+
       // Insert contact message directly into Supabase
       const result = await insertContactMessage({
         name: data.name,
@@ -81,9 +86,14 @@ const ContactSection = () => {
     } catch (error: any) {
       console.error("Contact form error:", error);
       
+      // Show user-friendly error message
+      const errorMessage = error.message?.includes('RLS') 
+        ? "There was a technical issue. Please email me directly at hello@prashant.dev"
+        : error.message || "Please try again later or contact me directly via email.";
+      
       toast({
         title: "Failed to send message",
-        description: error.message || "Please try again later or contact me directly via email.",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
