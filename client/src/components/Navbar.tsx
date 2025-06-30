@@ -74,7 +74,7 @@ const Navbar = () => {
             </div>
             <div className="hidden xs:block">
               <span className="text-primary font-alegreya font-bold text-xl sm:text-2xl tracking-wider uppercase">
-                Prashant
+                Prshant
               </span>
               <span className="text-foreground font-alegreya text-xs sm:text-sm tracking-widest block -mt-1">.developer</span>
             </div>
