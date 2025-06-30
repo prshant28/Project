@@ -46,7 +46,7 @@ const ProjectsSection = () => {
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <span className="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-medium tracking-wider uppercase">
+            <span className="inline-block px-4 py-2 bg-primary/20 dark:bg-primary/10 text-primary dark:text-primary rounded-full text-sm font-medium tracking-wider uppercase border border-primary/30">
               Portfolio
             </span>
           </motion.div>
@@ -73,7 +73,7 @@ const ProjectsSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Filter buttons */}
+        {/* Filter buttons - IMPROVED VISIBILITY */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,15 +87,15 @@ const ProjectsSection = () => {
               variant={filter === category ? "default" : "outline"}
               size="sm"
               onClick={() => setFilter(category)}
-              className={`rounded-full font-alegreya uppercase text-xs tracking-wider px-6 ${
+              className={`rounded-full font-alegreya uppercase text-xs tracking-wider px-6 transition-all duration-200 ${
                 filter === category
-                  ? "bg-primary shadow-lg shadow-primary/20"
-                  : "hover:bg-primary/10 hover:text-primary border-primary/20"
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-primary"
+                  : "hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border-primary/40 dark:border-primary/20 bg-background/80 dark:bg-muted/20"
               }`}
             >
               {category === "all" ? "All" : category}
               {filter === category && (
-                <span className="ml-2 flex h-2 w-2 rounded-full bg-white"></span>
+                <span className="ml-2 flex h-2 w-2 rounded-full bg-primary-foreground"></span>
               )}
             </Button>
           ))}
@@ -133,7 +133,7 @@ const ProjectsSection = () => {
                   <div className="relative h-56 overflow-hidden">
                     {/* Overlay gradient - FIXED */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity duration-300 group-hover:from-black/70"></div>
-
+                    
                     {/* Project image - OPTIMIZED */}
                     <img
                       src={project.image}
@@ -142,24 +142,18 @@ const ProjectsSection = () => {
                       loading="lazy"
                     />
 
-                    {/* Category and Status badges */}
+                    {/* Category and Status badges - FIXED VISIBILITY */}
                     <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-                      <Badge className="bg-primary/90 hover:bg-primary text-white font-alegreya uppercase tracking-wide py-1 px-3">
+                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 font-alegreya uppercase tracking-wide py-1.5 px-3 shadow-lg border border-primary/20">
                         {project.category}
                       </Badge>
                       {project.status && (
-                        <Badge
-                          variant="secondary"
-                          className="bg-orange-500/90 text-white font-poppins text-xs"
-                        >
+                        <Badge className="bg-orange-600 text-white hover:bg-orange-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-orange-500/30">
                           {project.status}
                         </Badge>
                       )}
                       {project.featured && (
-                        <Badge
-                          variant="secondary"
-                          className="bg-green-500/90 text-white font-poppins text-xs"
-                        >
+                        <Badge className="bg-green-600 text-white hover:bg-green-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-green-500/30">
                           Featured
                         </Badge>
                       )}
@@ -171,7 +165,7 @@ const ProjectsSection = () => {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center shadow-lg will-change-transform"
+                        className="w-9 h-9 rounded-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-lg border border-white/20 dark:border-gray-700/50 will-change-transform"
                         whileHover={{
                           scale: 1.1,
                           backgroundColor: "rgb(var(--primary))",
@@ -187,7 +181,7 @@ const ProjectsSection = () => {
                         href={project.sourceUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 flex items-center justify-center shadow-lg will-change-transform"
+                        className="w-9 h-9 rounded-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-lg border border-white/20 dark:border-gray-700/50 will-change-transform"
                         whileHover={{
                           scale: 1.1,
                           backgroundColor: "rgb(var(--primary))",
@@ -215,13 +209,13 @@ const ProjectsSection = () => {
                       {project.description}
                     </p>
 
-                    {/* Technologies used */}
+                    {/* Technologies used - IMPROVED VISIBILITY */}
                     <div className="flex flex-wrap gap-2 mb-3">
                       {project.technologies.map((tech, techIndex) => (
                         <Badge
                           key={techIndex}
                           variant="secondary"
-                          className="rounded-full text-xs font-medium bg-muted/50 hover:bg-primary/10 hover:text-primary border border-transparent hover:border-primary/20 transition-colors duration-200"
+                          className="rounded-full text-xs font-medium bg-muted/80 dark:bg-muted/50 text-foreground dark:text-muted-foreground hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border border-muted-foreground/20 dark:border-muted/40 hover:border-primary/30 transition-all duration-200 shadow-sm"
                         >
                           {tech}
                         </Badge>
