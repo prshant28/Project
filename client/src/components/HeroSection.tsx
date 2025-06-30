@@ -64,26 +64,6 @@ const HeroSection = () => {
     }
   };
 
-  // Download CV function
-  const downloadCV = () => {
-    // Create a temporary link to download CV
-    const link = document.createElement('a');
-    link.href = '/cv/Prashant_Maurya_CV.pdf'; // You'll need to add this file to public folder
-    link.download = 'Prashant_Maurya_CV.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  // Social media handlers
-  const handleSocialClick = (platform: string, url: string) => {
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  const handleEmailClick = () => {
-    window.location.href = "mailto:hello@prashant.dev";
-  };
-
   // Animated particles - using fixed positioning instead of scroll-based
   const particles = Array.from({ length: 15 }).map((_, i) => ({
     size: Math.random() * 6 + 3,
@@ -130,11 +110,12 @@ const HeroSection = () => {
 
       <div className="container mx-auto relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center w-full">
+          {/* Text Content Section - Mobile में पहले दिखेगा */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="order-2 md:order-1 text-center md:text-left"
+            className="order-1 md:order-1 text-center md:text-left"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.8, x: -100 }}
@@ -145,7 +126,7 @@ const HeroSection = () => {
                 Portfolio
               </span>
 
-              {/* FIXED: Theme-aware heading */}
+              {/* Theme-aware heading */}
               <motion.h1
                 className="font-alegreya font-bold text-3xl sm:text-4xl lg:text-5xl mb-2 tracking-wide uppercase leading-tight"
                 initial={{ opacity: 0, y: 20 }}
@@ -158,7 +139,7 @@ const HeroSection = () => {
                 </div>
               </motion.h1>
 
-              {/* FIXED: Colored typing effect */}
+              {/* Colored typing effect */}
               <motion.div
                 className="text-lg sm:text-xl md:text-2xl mb-6 h-8 font-poppins"
                 initial={{ opacity: 0 }}
@@ -182,7 +163,7 @@ const HeroSection = () => {
                 GadgetsFever.in and HostWithUs.site.
               </motion.p>
 
-              {/* SEO-optimized section - REPLACED MAIN CONTENT */}
+              {/* SEO-optimized section */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -205,7 +186,7 @@ const HeroSection = () => {
                 </div>
               </motion.div>
 
-              {/* Action buttons - UPDATED WITH WORKING FUNCTIONALITY */}
+              {/* Action buttons */}
               <motion.div
                 className="flex flex-col sm:flex-row gap-4 mb-8"
                 initial={{ opacity: 0, y: 20 }}
@@ -214,7 +195,6 @@ const HeroSection = () => {
               >
                 <Button
                   size="lg"
-                  onClick={downloadCV}
                   className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 flex items-center gap-2 group"
                 >
                   <Download size={18} className="group-hover:animate-bounce" />
@@ -234,7 +214,7 @@ const HeroSection = () => {
                 </Button>
               </motion.div>
 
-              {/* Social Links - UPDATED WITH WORKING FUNCTIONALITY */}
+              {/* Social Links */}
               <motion.div
                 className="flex justify-center md:justify-start gap-4"
                 initial={{ opacity: 0, y: 20 }}
@@ -242,46 +222,43 @@ const HeroSection = () => {
                 transition={{ delay: 1, duration: 0.6 }}
               >
                 {[
-                  { 
-                    icon: Github, 
-                    href: "https://github.com/prashantmaurya19", 
-                    label: "GitHub" 
-                  },
+                  { icon: Github, href: "https://github.com", label: "GitHub" },
                   {
                     icon: Linkedin,
-                    href: "https://linkedin.com/in/prashant-maurya-dev",
+                    href: "https://linkedin.com",
                     label: "LinkedIn",
                   },
                   {
                     icon: Mail,
-                    href: "mailto:hello@prashant.dev",
+                    href: "mailto:contact@prashant.dev",
                     label: "Email",
                   },
                 ].map((social, index) => (
-                  <motion.button
+                  <motion.a
                     key={social.label}
-                    onClick={() => social.label === "Email" ? handleEmailClick() : handleSocialClick(social.label, social.href)}
-                    className="social-icon w-12 h-12 rounded-full bg-card/50 backdrop-blur-sm border border-border flex items-center justify-center hover:border-primary hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="social-icon w-12 h-12 rounded-full bg-card/50 backdrop-blur-sm border border-border flex items-center justify-center hover:border-primary hover:shadow-lg hover:shadow-primary/20"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.2 + index * 0.1, duration: 0.4 }}
-                    aria-label={social.label}
                   >
                     <social.icon size={18} />
-                  </motion.button>
+                  </motion.a>
                 ))}
               </motion.div>
             </motion.div>
           </motion.div>
 
-          {/* Profile Image Section */}
+          {/* Profile Image Section - Mobile में बाद में दिखेगा */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 100 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="order-1 md:order-2 relative"
+            className="order-2 md:order-2 relative"
           >
             <div className="relative max-w-md mx-auto">
               {/* Multiple animated background layers */}
@@ -360,7 +337,7 @@ const HeroSection = () => {
                 />
               </motion.div>
 
-              {/* FIXED Floating achievements - Compact and properly positioned */}
+              {/* Floating achievements - Theme-aware text */}
               <motion.div
                 className="absolute top-3 -left-4 bg-card/90 backdrop-blur-md p-2.5 rounded-xl shadow-lg flex items-center gap-2 border border-primary/20 z-20"
                 initial={{ opacity: 0, x: 20 }}
