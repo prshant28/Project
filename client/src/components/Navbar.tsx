@@ -112,7 +112,7 @@ const Navbar = () => {
               <ThemeToggle />
               <motion.a 
                 href="#contact" 
-                className="bg-primary/80 hover:bg-primary text-white py-2 px-4 xl:px-5 rounded-full text-xs xl:text-sm font-medium transition-colors duration-300 flex items-center gap-1 shadow-lg shadow-primary/20 font-poppins"
+                className="bg-primary/80 hover:bg-primary text-white py-2 px-4 xl:px-5 rounded-full text-xs xl:text-sm font-medium transition-colors duration-300 flex items-center gap-1 shadow-lg shadow-primary/20 font-alegreya-sans-sc uppercase tracking-wider"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -182,7 +182,7 @@ const Navbar = () => {
             >
               <motion.a 
                 href="#contact" 
-                className="w-full bg-primary text-white py-3 px-6 rounded-full text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow-lg font-poppins"
+                className="w-full bg-primary text-white py-3 px-6 rounded-full text-base sm:text-lg font-medium flex items-center justify-center gap-2 shadow-lg font-alegreya-sans-sc uppercase tracking-wider"
                 onClick={closeMobileMenu}
                 whileTap={{ scale: 0.95 }}
               >
