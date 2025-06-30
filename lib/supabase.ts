@@ -2,8 +2,16 @@ import { createClient } from '@supabase/supabase-js';
 
 // Get Supabase credentials from environment variables
 // In Vite, client-side env vars must be prefixed with VITE_
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// In Node.js server-side, use regular process.env
+const supabaseUrl = typeof window !== 'undefined' 
+  ? import.meta.env.VITE_SUPABASE_URL 
+  : process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+
+const supabaseAnonKey = typeof window !== 'undefined'
+  ? import.meta.env.VITE_SUPABASE_ANON_KEY
+  : process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+
+const supabaseServiceRoleKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error(
@@ -13,6 +21,16 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 // Client for public operations (uses anon key)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Admin client for server-side operations (uses service role key)
+export const supabaseAdmin = supabaseServiceRoleKey 
+  ? createClient(supabaseUrl, supabaseServiceRoleKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false
+      }
+    })
+  : null;
 
 // Helper function to handle Supabase errors
 export function handleSupabaseError(error: any) {
