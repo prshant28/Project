@@ -133,7 +133,7 @@ const Footer = () => {
         
         <div className="border-t border-muted mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm mb-4 sm:mb-0">
-            © {currentYear} Prashant.dev. All rights reserved.
+            © {currentYear} Prashant.dev. All rights reserved. Build with Bolt.new
           </p>
           <div className="flex items-center gap-4">
             <button 
