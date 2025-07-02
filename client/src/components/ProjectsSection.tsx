@@ -1,1947 +1,280 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform } from "framer-motion";
-import { 
-  ExternalLink, 
-  Code, 
-  ArrowRight, 
-  Filter, 
-  Star, 
-  Calendar,
-  Eye,
-  Heart,
-  Share2,
-  Download,
-  Award,
-  Zap,
-  Grid3X3,
-  List,
-  Search,
-  SortAsc,
-  SortDesc,
-  Clock,
-  TrendingUp,
-  Github,
-  Globe,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
-  Minimize,
-  RefreshCw,
-  BookOpen,
-  Code2,
-  Database,
-  Smartphone,
-  Monitor,
-  Layers,
-  Cpu,
-  Cloud,
-  Lock,
-  Palette,
-  Lightbulb,
-  Target,
-  Users,
-  MessageCircle,
-  ThumbsUp,
-  Bookmark,
-  Tag,
-  ChevronDown,
-  ChevronUp,
-  X,
-  Plus,
-  Minus,
-  Settings,
-  Info,
-  CheckCircle,
-  AlertCircle,
-  Loader,
-  Sparkles,
-  Rocket,
-  Trophy,
-  Crown,
-  Diamond,
-  Flame,
-  Lightning,
-  Magic,
-  Wand2
-} from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Code, ArrowRight, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-
-// Advanced Particle System Component
-const ParticleSystem = ({ particleCount = 100, enableInteraction = true }) => {
-  const canvasRef = useRef(null);
-  const animationRef = useRef(null);
-  const particlesRef = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Particle class with advanced physics
-  class Particle {
-    constructor(canvas) {
-      this.canvas = canvas;
-      this.reset();
-      this.opacity = Math.random();
-      this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
-      this.pulseSpeed = 0.02 + Math.random() * 0.02;
-      this.connectionDistance = 120;
-      this.repulsionDistance = 80;
-      this.attractionStrength = 0.0002;
-      this.repulsionStrength = 0.8;
-      this.trail = [];
-      this.maxTrailLength = 10;
-      this.energy = Math.random() * 100;
-      this.energyDecay = 0.995;
-      this.minEnergy = 10;
-      this.glowIntensity = Math.random();
-      this.colorHue = Math.random() * 360;
-      this.colorShift = 0.5 + Math.random() * 0.5;
-    }
-
-    reset() {
-      this.x = Math.random() * this.canvas.width;
-      this.y = Math.random() * this.canvas.height;
-      this.vx = (Math.random() - 0.5) * 0.8;
-      this.vy = (Math.random() - 0.5) * 0.8;
-      this.size = 1 + Math.random() * 3;
-      this.originalSize = this.size;
-      this.life = 1;
-      this.maxLife = 200 + Math.random() * 300;
-      this.age = 0;
-    }
-
-    update(mouse, particles) {
-      // Age and life cycle
-      this.age++;
-      this.life = Math.max(0, 1 - this.age / this.maxLife);
-      
-      if (this.life <= 0) {
-        this.reset();
-        return;
-      }
-
-      // Store previous position for trail
-      this.trail.push({ x: this.x, y: this.y, opacity: this.opacity });
-      if (this.trail.length > this.maxTrailLength) {
-        this.trail.shift();
-      }
-
-      // Mouse interaction
-      if (enableInteraction && mouse) {
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < this.repulsionDistance) {
-          const force = (this.repulsionDistance - distance) / this.repulsionDistance;
-          this.vx -= (dx / distance) * force * this.repulsionStrength;
-          this.vy -= (dy / distance) * force * this.repulsionStrength;
-          this.energy = Math.min(100, this.energy + force * 20);
-        } else if (distance < this.connectionDistance) {
-          const force = (this.connectionDistance - distance) / this.connectionDistance;
-          this.vx += (dx / distance) * force * this.attractionStrength;
-          this.vy += (dy / distance) * force * this.attractionStrength;
-        }
-      }
-
-      // Particle-to-particle interactions
-      particles.forEach(other => {
-        if (other === this) return;
-        
-        const dx = other.x - this.x;
-        const dy = other.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < 50 && distance > 0) {
-          const force = (50 - distance) / 50 * 0.01;
-          this.vx -= (dx / distance) * force;
-          this.vy -= (dy / distance) * force;
-        }
-      });
-
-      // Apply velocity with damping
-      this.vx *= 0.99;
-      this.vy *= 0.99;
-      this.x += this.vx;
-      this.y += this.vy;
-
-      // Energy decay
-      this.energy *= this.energyDecay;
-      if (this.energy < this.minEnergy) {
-        this.energy = this.minEnergy;
-      }
-
-      // Boundary conditions with smooth wrapping
-      const margin = 50;
-      if (this.x < -margin) {
-        this.x = this.canvas.width + margin;
-      } else if (this.x > this.canvas.width + margin) {
-        this.x = -margin;
-      }
-      if (this.y < -margin) {
-        this.y = this.canvas.height + margin;
-      } else if (this.y > this.canvas.height + margin) {
-        this.y = -margin;
-      }
-
-      // Update visual properties
-      this.opacity += this.fadeDirection * this.pulseSpeed;
-      if (this.opacity <= 0.1 || this.opacity >= 0.9) {
-        this.fadeDirection *= -1;
-      }
-
-      this.size = this.originalSize + Math.sin(this.age * 0.05) * 0.5;
-      this.glowIntensity = 0.5 + Math.sin(this.age * 0.03) * 0.5;
-      this.colorHue += this.colorShift;
-      if (this.colorHue > 360) this.colorHue = 0;
-    }
-
-    draw(ctx) {
-      const energyFactor = this.energy / 100;
-      const alpha = this.opacity * this.life * (0.3 + energyFactor * 0.7);
-      
-      // Draw trail
-      this.trail.forEach((point, index) => {
-        const trailAlpha = alpha * (index / this.trail.length) * 0.3;
-        const trailSize = this.size * (index / this.trail.length) * 0.5;
-        
-        ctx.save();
-        ctx.globalAlpha = trailAlpha;
-        ctx.fillStyle = `hsl(${this.colorHue}, 70%, 60%)`;
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, trailSize, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      });
-
-      // Draw main particle with glow effect
-      ctx.save();
-      
-      // Outer glow
-      const glowSize = this.size * (2 + this.glowIntensity * 3);
-      const gradient = ctx.createRadialGradient(
-        this.x, this.y, 0,
-        this.x, this.y, glowSize
-      );
-      gradient.addColorStop(0, `hsla(${this.colorHue}, 80%, 70%, ${alpha * 0.8})`);
-      gradient.addColorStop(0.4, `hsla(${this.colorHue}, 70%, 60%, ${alpha * 0.4})`);
-      gradient.addColorStop(1, `hsla(${this.colorHue}, 60%, 50%, 0)`);
-      
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, glowSize, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Inner core
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = `hsl(${this.colorHue}, 90%, 80%)`;
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Sparkle effect for high energy particles
-      if (this.energy > 70) {
-        ctx.globalAlpha = alpha * 0.6;
-        ctx.strokeStyle = `hsl(${this.colorHue + 60}, 100%, 90%)`;
-        ctx.lineWidth = 1;
-        const sparkleSize = this.size * 2;
-        ctx.beginPath();
-        ctx.moveTo(this.x - sparkleSize, this.y);
-        ctx.lineTo(this.x + sparkleSize, this.y);
-        ctx.moveTo(this.x, this.y - sparkleSize);
-        ctx.lineTo(this.x, this.y + sparkleSize);
-        ctx.stroke();
-      }
-
-      ctx.restore();
-    }
-  }
-
-  // Connection drawing with advanced effects
-  const drawConnections = (ctx, particles, mouse) => {
-    particles.forEach((particle, i) => {
-      // Particle to particle connections
-      for (let j = i + 1; j < particles.length; j++) {
-        const other = particles[j];
-        const dx = other.x - particle.x;
-        const dy = other.y - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < particle.connectionDistance) {
-          const opacity = (1 - distance / particle.connectionDistance) * 0.3;
-          const energyFactor = (particle.energy + other.energy) / 200;
-          
-          ctx.save();
-          ctx.globalAlpha = opacity * particle.life * other.life;
-          
-          // Create gradient line
-          const gradient = ctx.createLinearGradient(
-            particle.x, particle.y, other.x, other.y
-          );
-          gradient.addColorStop(0, `hsl(${particle.colorHue}, 70%, 60%)`);
-          gradient.addColorStop(1, `hsl(${other.colorHue}, 70%, 60%)`);
-          
-          ctx.strokeStyle = gradient;
-          ctx.lineWidth = 0.5 + energyFactor;
-          ctx.beginPath();
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(other.x, other.y);
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
-
-      // Mouse to particle connections
-      if (enableInteraction && mouse && isHovered) {
-        const dx = mouse.x - particle.x;
-        const dy = mouse.y - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance < particle.connectionDistance * 1.5) {
-          const opacity = (1 - distance / (particle.connectionDistance * 1.5)) * 0.5;
-          
-          ctx.save();
-          ctx.globalAlpha = opacity * particle.life;
-          ctx.strokeStyle = `hsl(${particle.colorHue}, 80%, 70%)`;
-          ctx.lineWidth = 1 + (particle.energy / 100);
-          ctx.beginPath();
-          ctx.moveTo(particle.x, particle.y);
-          ctx.lineTo(mouse.x, mouse.y);
-          ctx.stroke();
-          ctx.restore();
-        }
-      }
-    });
-  };
-
-  // Animation loop
-  const animate = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    const particles = particlesRef.current;
-    const mouse = mouseRef.current;
-
-    // Clear canvas with fade effect
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Update and draw particles
-    particles.forEach(particle => {
-      particle.update(mouse, particles);
-      particle.draw(ctx);
-    });
-
-    // Draw connections
-    drawConnections(ctx, particles, mouse);
-
-    // Draw mouse glow effect
-    if (enableInteraction && isHovered && mouse) {
-      ctx.save();
-      const glowGradient = ctx.createRadialGradient(
-        mouse.x, mouse.y, 0,
-        mouse.x, mouse.y, 100
-      );
-      glowGradient.addColorStop(0, 'rgba(147, 51, 234, 0.2)');
-      glowGradient.addColorStop(0.5, 'rgba(147, 51, 234, 0.1)');
-      glowGradient.addColorStop(1, 'rgba(147, 51, 234, 0)');
-      
-      ctx.fillStyle = glowGradient;
-      ctx.beginPath();
-      ctx.arc(mouse.x, mouse.y, 100, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    animationRef.current = requestAnimationFrame(animate);
-  }, [isHovered, enableInteraction]);
-
-  // Initialize particles
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Create particles
-    particlesRef.current = Array.from({ length: particleCount }, () => new Particle(canvas));
-
-    // Start animation
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [animate, particleCount]);
-
-  // Mouse event handlers
-  const handleMouseMove = useCallback((e) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const rect = canvas.getBoundingClientRect();
-    mouseRef.current = {
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    };
-  }, []);
-
-  const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ background: 'transparent' }}
-      onMouseMove={enableInteraction ? handleMouseMove : undefined}
-      onMouseEnter={enableInteraction ? handleMouseEnter : undefined}
-      onMouseLeave={enableInteraction ? handleMouseLeave : undefined}
-    />
-  );
-};
-
-// Enhanced project data structure
-const enhancedProjects = [
-  {
-    id: 1,
-    title: "EduConnect 247",
-    description: "AI-powered academic assistant with Smart AI Study Planner, Assignment Tracker, In-app messaging system, and comprehensive learning analytics.",
-    longDescription: "EduConnect 247 is a revolutionary educational platform that leverages artificial intelligence to transform the learning experience. Built with cutting-edge technology, it features personalized study planning, intelligent assignment tracking, real-time collaboration tools, and advanced analytics to help students achieve their academic goals.",
-    image: "/api/placeholder/600/400",
-    category: "AI Platform",
-    technologies: ["React", "Node.js", "Python", "TensorFlow", "MongoDB", "Socket.io", "JWT", "Material-UI"],
-    liveUrl: "https://educonnect247.com",
-    sourceUrl: "https://github.com/prashant/educonnect247",
-    status: "Live",
-    featured: true,
-    date: "2024-12-15",
-    views: 15420,
-    likes: 892,
-    shares: 156,
-    difficulty: "Advanced",
-    duration: "6 months",
-    teamSize: 4,
-    role: "Full Stack Developer & AI Integration Specialist",
-    achievements: ["Best Educational App 2024", "AI Innovation Award"],
-    keyFeatures: [
-      "Smart AI Study Planner with personalized recommendations",
-      "Real-time assignment tracking and deadline management",
-      "Collaborative study groups with video conferencing",
-      "Advanced analytics and progress visualization",
-      "Multi-language support with 15+ languages",
-      "Offline mode with data synchronization"
-    ],
-    techStack: {
-      frontend: ["React 18", "TypeScript", "Tailwind CSS", "Framer Motion"],
-      backend: ["Node.js", "Express.js", "Python Flask", "GraphQL"],
-      database: ["MongoDB", "Redis", "PostgreSQL"],
-      ai: ["TensorFlow", "OpenAI GPT-4", "Scikit-learn"],
-      deployment: ["AWS", "Docker", "Kubernetes", "CloudFront"]
-    },
-    metrics: {
-      performance: 98,
-      accessibility: 95,
-      seo: 92,
-      bestPractices: 96
-    },
-    testimonials: [
-      {
-        name: "Dr. Sarah Johnson",
-        role: "Education Director",
-        comment: "EduConnect 247 has revolutionized how our students learn and collaborate."
-      }
-    ]
-  },
-  {
-    id: 2,
-    title: "GadgetsFever",
-    description: "Comprehensive tech blog platform covering latest gadgets, technology news, reviews, and in-depth analysis of consumer electronics.",
-    longDescription: "GadgetsFever is a cutting-edge technology blog platform that serves as the ultimate destination for tech enthusiasts. With comprehensive coverage of the latest gadgets, detailed reviews, and expert analysis, it has become the go-to resource for informed technology decisions.",
-    image: "/api/placeholder/600/400",
-    category: "Tech Blog",
-    technologies: ["WordPress", "PHP", "MySQL", "JavaScript", "SCSS", "SEO Optimization"],
-    liveUrl: "https://gadgetsfever.com",
-    sourceUrl: "https://github.com/prashant/gadgetsfever",
-    status: "Live",
-    featured: true,
-    date: "2024-11-20",
-    views: 28750,
-    likes: 1240,
-    shares: 320,
-    difficulty: "Intermediate",
-    duration: "4 months",
-    teamSize: 3,
-    role: "Lead Developer & Content Strategist",
-    achievements: ["Top Tech Blog 2024", "Content Excellence Award"],
-    keyFeatures: [
-      "Advanced content management system",
-      "Real-time gadget price tracking",
-      "Interactive product comparison tools",
-      "User-generated reviews and ratings",
-      "Newsletter automation system",
-      "Social media integration"
-    ],
-    techStack: {
-      frontend: ["WordPress", "Custom PHP", "JavaScript ES6", "SCSS"],
-      backend: ["PHP 8.1", "MySQL 8.0", "Apache"],
-      cms: ["Custom WordPress Theme", "Advanced Custom Fields"],
-      seo: ["Yoast SEO", "Schema Markup", "Google Analytics"],
-      deployment: ["cPanel", "Cloudflare", "SSL Certificate"]
-    },
-    metrics: {
-      performance: 94,
-      accessibility: 91,
-      seo: 98,
-      bestPractices: 93
-    }
-  },
-  {
-    id: 3,
-    title: "HostWithUs",
-    description: "Web and app hosting platform providing reliable hosting solutions. Founded and developed with modern infrastructure and security features.",
-    longDescription: "HostWithUs is a comprehensive hosting platform designed to provide scalable, secure, and reliable hosting solutions for businesses of all sizes. Built with modern cloud infrastructure and advanced security measures.",
-    image: "/api/placeholder/600/400",
-    category: "Hosting Platform",
-    technologies: ["Full-Stack", "Cloud Infrastructure", "DevOps", "Security"],
-    liveUrl: "https://hostwithus.com",
-    sourceUrl: "https://github.com/prashant/hostwithus",
-    status: "Live",
-    featured: true,
-    date: "2024-10-10",
-    views: 12300,
-    likes: 567,
-    shares: 89,
-    difficulty: "Expert",
-    duration: "8 months",
-    teamSize: 6,
-    role: "Founder & Lead Architect",
-    achievements: ["Best Hosting Startup 2024", "Security Excellence Award"],
-    keyFeatures: [
-      "Auto-scaling cloud infrastructure",
-      "Advanced security monitoring",
-      "One-click application deployment",
-      "24/7 customer support system",
-      "Backup and disaster recovery",
-      "Performance optimization tools"
-    ],
-    techStack: {
-      frontend: ["React", "Next.js", "TypeScript", "Chakra UI"],
-      backend: ["Node.js", "Express.js", "Python", "Go"],
-      database: ["PostgreSQL", "MongoDB", "Redis"],
-      infrastructure: ["AWS", "Docker", "Kubernetes", "Terraform"],
-      monitoring: ["Prometheus", "Grafana", "ELK Stack"]
-    },
-    metrics: {
-      performance: 99,
-      accessibility: 94,
-      seo: 89,
-      bestPractices: 97
-    }
-  },
-  {
-    id: 4,
-    title: "ShopEase Pro",
-    description: "Modern e-commerce platform with advanced features including AI-powered recommendations, real-time inventory management, and seamless payment integration.",
-    longDescription: "ShopEase Pro is a next-generation e-commerce platform that combines cutting-edge technology with user-centric design to deliver exceptional shopping experiences.",
-    image: "/api/placeholder/600/400",
-    category: "E-Commerce",
-    technologies: ["React", "Node.js", "Stripe", "MongoDB", "Redis", "AWS"],
-    liveUrl: "https://shopeasepro.com",
-    sourceUrl: "https://github.com/prashant/shopeasepro",
-    status: "In Development",
-    featured: false,
-    date: "2024-09-15",
-    views: 8900,
-    likes: 445,
-    shares: 67,
-    difficulty: "Advanced",
-    duration: "5 months",
-    teamSize: 5,
-    role: "Full Stack Developer",
-    keyFeatures: [
-      "AI-powered product recommendations",
-      "Real-time inventory management",
-      "Multi-vendor marketplace",
-      "Advanced analytics dashboard",
-      "Mobile-first responsive design",
-      "Integrated payment gateway"
-    ],
-    techStack: {
-      frontend: ["React 18", "Redux Toolkit", "Tailwind CSS"],
-      backend: ["Node.js", "Express.js", "GraphQL"],
-      database: ["MongoDB", "Redis"],
-      payment: ["Stripe", "PayPal", "Razorpay"],
-      deployment: ["AWS", "Docker", "CI/CD Pipeline"]
-    },
-    metrics: {
-      performance: 96,
-      accessibility: 93,
-      seo: 91,
-      bestPractices: 95
-    }
-  },
-  {
-    id: 5,
-    title: "TaskMaster Analytics",
-    description: "Comprehensive project management platform with advanced analytics, team collaboration tools, and AI-powered insights for productivity optimization.",
-    longDescription: "TaskMaster Analytics revolutionizes project management by combining powerful analytics with intuitive collaboration tools.",
-    image: "/api/placeholder/600/400",
-    category: "Platform",
-    technologies: ["Vue.js", "Python", "FastAPI", "PostgreSQL", "Docker"],
-    liveUrl: "https://taskmasteranalytics.com",
-    sourceUrl: "https://github.com/prashant/taskmaster",
-    status: "Beta",
-    featured: false,
-    date: "2024-08-20",
-    views: 6750,
-    likes: 234,
-    shares: 45,
-    difficulty: "Advanced",
-    duration: "4 months",
-    teamSize: 3,
-    role: "Backend Developer & Data Analyst",
-    keyFeatures: [
-      "Advanced project analytics",
-      "Team performance insights",
-      "Automated reporting system",
-      "Real-time collaboration",
-      "Custom dashboard creation",
-      "API integration capabilities"
-    ],
-    techStack: {
-      frontend: ["Vue.js 3", "Vuetify", "Chart.js"],
-      backend: ["Python", "FastAPI", "Celery"],
-      database: ["PostgreSQL", "InfluxDB"],
-      analytics: ["Pandas", "NumPy", "Plotly"],
-      deployment: ["Docker", "Kubernetes", "GCP"]
-    },
-    metrics: {
-      performance: 93,
-      accessibility: 90,
-      seo: 87,
-      bestPractices: 92
-    }
-  },
-  {
-    id: 6,
-    title: "AI Content Creator",
-    description: "Intelligent content generation platform powered by advanced AI models, supporting multiple content types and languages with SEO optimization.",
-    longDescription: "AI Content Creator leverages state-of-the-art artificial intelligence to generate high-quality, SEO-optimized content across multiple formats and languages.",
-    image: "/api/placeholder/600/400",
-    category: "AI Tools",
-    technologies: ["Python", "OpenAI", "React", "FastAPI", "PostgreSQL"],
-    liveUrl: "https://aicontentcreator.com",
-    sourceUrl: "https://github.com/prashant/ai-content-creator",
-    status: "Live",
-    featured: true,
-    date: "2024-07-10",
-    views: 19200,
-    likes: 876,
-    shares: 234,
-    difficulty: "Expert",
-    duration: "6 months",
-    teamSize: 4,
-    role: "AI Engineer & Full Stack Developer",
-    achievements: ["AI Innovation Award 2024"],
-    keyFeatures: [
-      "Multi-format content generation",
-      "SEO optimization algorithms",
-      "Multi-language support",
-      "Plagiarism detection",
-      "Content scheduling system",
-      "Analytics and performance tracking"
-    ],
-    techStack: {
-      frontend: ["React", "TypeScript", "Material-UI"],
-      backend: ["Python", "FastAPI", "Celery"],
-      ai: ["OpenAI GPT-4", "Hugging Face", "spaCy"],
-      database: ["PostgreSQL", "Redis", "Elasticsearch"],
-      deployment: ["AWS", "Docker", "Lambda Functions"]
-    },
-    metrics: {
-      performance: 97,
-      accessibility: 94,
-      seo: 96,
-      bestPractices: 98
-    }
-  }
-];
+import { projects } from "@/data/projects";
 
 const ProjectsSection = () => {
-  // State management
-  const [filter, setFilter] = useState("all");
-  const [sortBy, setSortBy] = useState("recent");
-  const [viewMode, setViewMode] = useState("grid");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [showFilters, setShowFilters] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [likedProjects, setLikedProjects] = useState(new Set());
-  const [bookmarkedProjects, setBookmarkedProjects] = useState(new Set());
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
-  const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedTech, setSelectedTech] = useState("all");
-  const [difficultyFilter, setDifficultyFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [particleEnabled, setParticleEnabled] = useState(true);
+  const [filter, setFilter] = useState<string>("all");
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  // Refs and motion values
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  // Get unique values for filters
-  const categories = useMemo(() => [
+  // Get unique categories from projects
+  const categories = [
     "all",
-    ...Array.from(new Set(enhancedProjects.map(p => p.category.toLowerCase())))
-  ], []);
+    ...Array.from(new Set(projects.map((p) => p.category.toLowerCase()))),
+  ];
 
-  const technologies = useMemo(() => [
-    "all",
-    ...Array.from(new Set(enhancedProjects.flatMap(p => p.technologies)))
-  ], []);
-
-  const difficulties = useMemo(() => [
-    "all",
-    ...Array.from(new Set(enhancedProjects.map(p => p.difficulty).filter(Boolean)))
-  ], []);
-
-  const statuses = useMemo(() => [
-    "all",
-    ...Array.from(new Set(enhancedProjects.map(p => p.status).filter(Boolean)))
-  ], []);
-
-  // Enhanced filtering and sorting logic
-  const filteredAndSortedProjects = useMemo(() => {
-    let filtered = enhancedProjects.filter(project => {
-      const matchesCategory = filter === "all" || project.category.toLowerCase() === filter;
-      const matchesSearch = searchQuery === "" || 
-        project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        project.technologies.some(tech => tech.toLowerCase().includes(searchQuery.toLowerCase()));
-      const matchesTech = selectedTech === "all" || project.technologies.includes(selectedTech);
-      const matchesDifficulty = difficultyFilter === "all" || project.difficulty === difficultyFilter;
-      const matchesStatus = statusFilter === "all" || project.status === statusFilter;
-
-      return matchesCategory && matchesSearch && matchesTech && matchesDifficulty && matchesStatus;
-    });
-
-    // Sorting logic
-    filtered.sort((a, b) => {
-      let comparison = 0;
-      
-      switch (sortBy) {
-        case "recent":
-          comparison = new Date(b.date) - new Date(a.date);
-          break;
-        case "popular":
-          comparison = (b.views || 0) - (a.views || 0);
-          break;
-        case "featured":
-          comparison = (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
-          break;
-        case "likes":
-          comparison = (b.likes || 0) - (a.likes || 0);
-          break;
-        case "alphabetical":
-          comparison = a.title.localeCompare(b.title);
-          break;
-        case "difficulty":
-          const difficultyOrder = { "Beginner": 1, "Intermediate": 2, "Advanced": 3, "Expert": 4 };
-          comparison = (difficultyOrder[b.difficulty] || 0) - (difficultyOrder[a.difficulty] || 0);
-          break;
-        default:
-          comparison = new Date(b.date) - new Date(a.date);
-      }
-
-      return sortOrder === "desc" ? comparison : -comparison;
-    });
-
-    return filtered;
-  }, [filter, searchQuery, sortBy, sortOrder, selectedTech, difficultyFilter, statusFilter]);
-
-  // Pagination logic
-  const totalPages = Math.ceil(filteredAndSortedProjects.length / itemsPerPage);
-  const paginatedProjects = filteredAndSortedProjects.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  // Event handlers
-  const handleLike = useCallback((projectId) => {
-    setLikedProjects(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(projectId)) {
-        newSet.delete(projectId);
-      } else {
-        newSet.add(projectId);
-      }
-      return newSet;
-    });
-  }, []);
-
-  const handleBookmark = useCallback((projectId) => {
-    setBookmarkedProjects(prev => {
-      const newSet = new Set(prev);
-      if (newSet.has(projectId)) {
-        newSet.delete(projectId);
-      } else {
-        newSet.add(projectId);
-      }
-      return newSet;
-    });
-  }, []);
-
-  const handleShare = useCallback(async (project) => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: project.title,
-          text: project.description,
-          url: project.liveUrl
-        });
-      } catch (error) {
-        console.log('Error sharing:', error);
-      }
-    } else {
-      // Fallback to clipboard
-      navigator.clipboard.writeText(project.liveUrl);
-    }
-  }, []);
-
-  const resetFilters = useCallback(() => {
-    setFilter("all");
-    setSortBy("recent");
-    setSearchQuery("");
-    setSelectedTech("all");
-    setDifficultyFilter("all");
-    setStatusFilter("all");
-    setCurrentPage(1);
-  }, []);
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
-
-  const cardHoverVariants = {
-    hover: {
-      y: -12,
-      scale: 1.02,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20
-      }
-    }
-  };
-
-  // Mouse move handler for interactive effects
-  const handleMouseMove = useCallback((event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    mouseX.set(event.clientX - rect.left);
-    mouseY.set(event.clientY - rect.top);
-  }, [mouseX, mouseY]);
-
-  // Transform values for interactive effects
-  const rotateX = useTransform(mouseY, [0, 400], [10, -10]);
-  const rotateY = useTransform(mouseX, [0, 400], [-10, 10]);
+  // Filter projects based on selected category
+  const filteredProjects =
+    filter === "all"
+      ? projects
+      : projects.filter((project) => project.category.toLowerCase() === filter);
 
   return (
-    <TooltipProvider>
-      <section
-        ref={sectionRef}
-        id="projects"
-        className="py-20 sm:py-24 bg-gradient-to-br from-background via-muted/20 to-background relative overflow-hidden w-full"
-        onMouseMove={handleMouseMove}
-      >
-        {/* Advanced Particle Background */}
-        {particleEnabled && (
-          <ParticleSystem 
-            particleCount={80} 
-            enableInteraction={true}
-          />
-        )}
+    <section
+      id="projects"
+      className="py-16 sm:py-20 bg-muted/5 relative overflow-hidden w-full"
+    >
+      {/* Background decorative elements - contained within viewport */}
+      <div className="absolute top-40 right-10 w-80 h-80 rounded-full bg-primary/5 filter blur-3xl -z-10"></div>
+      <div className="absolute bottom-20 left-10 w-80 h-80 rounded-full bg-secondary/5 filter blur-3xl -z-10"></div>
 
-        {/* Enhanced Background Effects */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.05] z-1"></div>
-        <motion.div 
-          className="absolute top-20 right-20 w-96 h-96 rounded-full bg-gradient-to-r from-primary/10 to-purple-500/10 filter blur-3xl z-1"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-40 left-20 w-80 h-80 rounded-full bg-gradient-to-r from-secondary/10 to-blue-500/10 filter blur-3xl z-1"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.6, 0.3, 0.6]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-primary/5 to-purple-500/5 filter blur-3xl z-1"></div>
-
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-          {/* Particle Control Toggle */}
-          <div className="fixed top-4 right-4 z-50">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setParticleEnabled(!particleEnabled)}
-                  className="rounded-full bg-background/80 backdrop-blur-sm"
-                >
-                  {particleEnabled ? <Sparkles size={16} /> : <Star size={16} />}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{particleEnabled ? 'Disable' : 'Enable'} Particles</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-
-          {/* Enhanced Header Section */}
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          {/* Portfolio Title Added */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-center mb-20"
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
           >
-            {/* Animated Portfolio Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-8"
-            >
-              <span className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/20 to-purple-500/20 dark:from-primary/10 dark:to-purple-500/10 text-primary dark:text-primary rounded-full text-sm font-semibold tracking-wider uppercase border border-primary/30 shadow-lg backdrop-blur-sm">
-                <Award size={16} className="animate-pulse" />
-                Portfolio Showcase
-                <Sparkles size={16} className="animate-bounce" />
-              </span>
-            </motion.div>
-
-            {/* Enhanced Title with Gradient Animation */}
-            <motion.h2
-              initial={{ opacity: 0, y: -30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="font-alegreya font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 relative inline-block"
-            >
-              <span className="bg-gradient-to-r from-primary via-purple-500 to-secondary text-transparent bg-clip-text animate-gradient-x bg-300% leading-tight">
-                Featured Projects
-              </span>
-              <motion.div
-                className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary to-purple-500 rounded-full"
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              />
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="max-w-3xl mx-auto text-muted-foreground text-lg leading-relaxed"
-            >
-              Explore my latest creations that showcase cutting-edge technology, innovative design, 
-              and seamless user experiences. Each project represents a unique challenge conquered with passion and precision.
-            </motion.p>
-
-            {/* Project Statistics */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-wrap justify-center gap-8 mt-8"
-            >
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">{enhancedProjects.length}+</div>
-                <div className="text-sm text-muted-foreground">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {enhancedProjects.reduce((sum, p) => sum + (p.views || 0), 0).toLocaleString()}+
-                </div>
-                <div className="text-sm text-muted-foreground">Total Views</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {enhancedProjects.filter(p => p.featured).length}
-                </div>
-                <div className="text-sm text-muted-foreground">Featured</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-primary">
-                  {Array.from(new Set(enhancedProjects.flatMap(p => p.technologies))).length}+
-                </div>
-                <div className="text-sm text-muted-foreground">Technologies</div>
-              </div>
-            </motion.div>
+            <span className="inline-block px-4 py-2 bg-primary/20 dark:bg-primary/10 text-primary dark:text-primary rounded-full text-sm font-medium tracking-wider uppercase border border-primary/30">
+              Portfolio
+            </span>
           </motion.div>
 
-          {/* Advanced Search and Filter Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="mb-12"
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="font-alegreya font-bold text-3xl sm:text-4xl lg:text-5xl mb-4 relative inline-block bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text"
           >
-            {/* Search Bar */}
-            <div className="flex flex-col lg:flex-row gap-4 mb-6">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                <Input
-                  type="text"
-                  placeholder="Search projects, technologies, or descriptions..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-4 py-3 rounded-full border-2 border-muted focus:border-primary transition-colors bg-background/50 backdrop-blur-sm"
-                />
-                {searchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 rounded-full"
-                  >
-                    <X size={16} />
-                  </Button>
-                )}
-              </div>
-              
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowFilters(!showFilters)}
-                  className="rounded-full px-6 bg-background/50 backdrop-blur-sm"
-                >
-                  <Filter size={16} className="mr-2" />
-                  Filters
-                  <ChevronDown 
-                    size={16} 
-                    className={`ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} 
-                  />
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  onClick={resetFilters}
-                  className="rounded-full px-6 bg-background/50 backdrop-blur-sm"
-                >
-                  <RefreshCw size={16} className="mr-2" />
-                  Reset
-                </Button>
-              </div>
-            </div>
+            Featured Projects
+          </motion.h2>
 
-            {/* Advanced Filters */}
-            <AnimatePresence>
-              {showFilters && (
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="max-w-2xl mx-auto text-muted-foreground"
+          >
+            Here are some of my recent works that showcase my skills and
+            expertise in full-stack development and AI integration.
+          </motion.p>
+        </motion.div>
+
+        {/* Filter buttons - IMPROVED VISIBILITY */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex flex-wrap justify-center gap-3 mb-12"
+        >
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={filter === category ? "default" : "outline"}
+              size="sm"
+              onClick={() => setFilter(category)}
+              className={`rounded-full font-alegreya uppercase text-xs tracking-wider px-6 transition-all duration-200 ${
+                filter === category
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-primary"
+                  : "hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border-primary/40 dark:border-primary/20 bg-background/80 dark:bg-muted/20"
+              }`}
+            >
+              {category === "all" ? "All" : category}
+              {filter === category && (
+                <span className="ml-2 flex h-2 w-2 rounded-full bg-primary-foreground"></span>
+              )}
+            </Button>
+          ))}
+        </motion.div>
+
+        {/* Projects grid with staggered animation */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatePresence>
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group relative"
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                {/* Project Card with FIXED hover effects */}
                 <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-muted/50 mb-6"
+                  className="rounded-xl overflow-hidden bg-card border border-muted hover:border-primary/30 transition-all duration-300 shadow-lg hover:shadow-xl will-change-transform"
+                  whileHover={{
+                    y: -8,
+                    transition: {
+                      type: "tween",
+                      duration: 0.2,
+                      ease: "easeOut",
+                    },
+                  }}
+                  style={{ transformOrigin: "center" }}
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {/* Category Filter */}
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Category</label>
-                      <Select value={filter} onValueChange={setFilter}>
-                        <SelectTrigger className="rounded-full">
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {categories.map(category => (
-                            <SelectItem key={category} value={category}>
-                              {category === "all" ? "All Categories" : category}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                  {/* Card Header with Image */}
+                  <div className="relative h-56 overflow-hidden">
+                    {/* Overlay gradient - FIXED */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity duration-300 group-hover:from-black/70"></div>
+                    
+                    {/* Project image - OPTIMIZED */}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 will-change-transform"
+                      loading="lazy"
+                    />
+
+                    {/* Category and Status badges - FIXED VISIBILITY */}
+                    <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+                      <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 font-alegreya uppercase tracking-wide py-1.5 px-3 shadow-lg border border-primary/20">
+                        {project.category}
+                      </Badge>
+                      {project.status && (
+                        <Badge className="bg-orange-600 text-white hover:bg-orange-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-orange-500/30">
+                          {project.status}
+                        </Badge>
+                      )}
+                      {project.featured && (
+                        <Badge className="bg-green-600 text-white hover:bg-green-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-green-500/30">
+                          Featured
+                        </Badge>
+                      )}
                     </div>
 
-                    {/* Technology Filter */}
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Technology</label>
-                      <Select value={selectedTech} onValueChange={setSelectedTech}>
-                        <SelectTrigger className="rounded-full">
-                          <SelectValue placeholder="Select technology" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {technologies.map(tech => (
-                            <SelectItem key={tech} value={tech}>
-                              {tech === "all" ? "All Technologies" : tech}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {/* Quick action buttons - COMPLETELY FIXED */}
+                    <div className="absolute bottom-4 right-4 z-30 flex gap-2">
+                      <motion.a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 rounded-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-lg border border-white/20 dark:border-gray-700/50 will-change-transform"
+                        whileHover={{
+                          scale: 1.1,
+                          backgroundColor: "rgb(var(--primary))",
+                          color: "white",
+                          transition: { duration: 0.2 },
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        aria-label="View live site"
+                      >
+                        <ExternalLink size={14} />
+                      </motion.a>
+                      <motion.a
+                        href={project.sourceUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-9 h-9 rounded-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-lg border border-white/20 dark:border-gray-700/50 will-change-transform"
+                        whileHover={{
+                          scale: 1.1,
+                          backgroundColor: "rgb(var(--primary))",
+                          color: "white",
+                          transition: { duration: 0.2 },
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        aria-label="View source code"
+                      >
+                        <Code size={14} />
+                      </motion.a>
+                    </div>
+                  </div>
+
+                  {/* Card Content */}
+                  <div className="p-6">
+                    {/* Project title with SMOOTH animated underline */}
+                    <h3 className="font-alegreya font-bold text-xl mb-2 relative inline-block group-hover:text-primary transition-colors duration-300">
+                      {project.title}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 ease-out group-hover:w-full"></span>
+                    </h3>
+
+                    {/* Project description */}
+                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                      {project.description}
+                    </p>
+
+                    {/* Technologies used - IMPROVED VISIBILITY */}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {project.technologies.map((tech, techIndex) => (
+                        <Badge
+                          key={techIndex}
+                          variant="secondary"
+                          className="rounded-full text-xs font-medium bg-muted/80 dark:bg-muted/50 text-foreground dark:text-muted-foreground hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border border-muted-foreground/20 dark:border-muted/40 hover:border-primary/30 transition-all duration-200 shadow-sm"
+                        >
+                          {tech}
+                        </Badge>
+                      ))}
                     </div>
 
-                    {/* Difficulty Filter */}
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Difficulty</label>
-                      <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-                        <SelectTrigger className="rounded-full">
-                          <SelectValue placeholder="Select difficulty" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {difficulties.map(difficulty => (
-                            <SelectItem key={difficulty} value={difficulty}>
-                              {difficulty === "all" ? "All Levels" : difficulty}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Status Filter */}
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Status</label>
-                      <Select value={statusFilter} onValueChange={setStatusFilter}>
-                        <SelectTrigger className="rounded-full">
-                          <SelectValue placeholder="Select status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {statuses.map(status => (
-                            <SelectItem key={status} value={status}>
-                              {status === "all" ? "All Status" : status}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    {/* View details link */}
+                    <div className="pt-2 border-t border-muted">
+                      <a
+                        href="#"
+                        className="text-primary hover:text-primary/80 transition-colors duration-200 flex items-center gap-1 text-sm font-medium group/link"
+                      >
+                        <span>View Project Details</span>
+                        <ArrowRight
+                          size={14}
+                          className="transition-transform duration-200 group-hover/link:translate-x-1"
+                        />
+                      </a>
                     </div>
                   </div>
                 </motion.div>
-              )}
-            </AnimatePresence>
 
-            {/* Sort and View Controls */}
-            <div className="flex flex-wrap justify-between items-center gap-4">
-              <div className="flex flex-wrap items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Sort by:</span>
-                  <Select value={sortBy} onValueChange={setSortBy}>
-                    <SelectTrigger className="w-40 rounded-full bg-background/50 backdrop-blur-sm">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="recent">Recent</SelectItem>
-                      <SelectItem value="popular">Popular</SelectItem>
-                      <SelectItem value="featured">Featured</SelectItem>
-                      <SelectItem value="likes">Most Liked</SelectItem>
-                      <SelectItem value="alphabetical">A-Z</SelectItem>
-                      <SelectItem value="difficulty">Difficulty</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setSortOrder(sortOrder === "desc" ? "asc" : "desc")}
-                    className="rounded-full bg-background/50 backdrop-blur-sm"
-                  >
-                    {sortOrder === "desc" ? <SortDesc size={16} /> : <SortAsc size={16} />}
-                  </Button>
-                </div>
-
-                <div className="text-sm text-muted-foreground">
-                  Showing {filteredAndSortedProjects.length} of {enhancedProjects.length} projects
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('grid')}
-                  className="rounded-full"
-                >
-                  <Grid3X3 size={16} />
-                </Button>
-                <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('list')}
-                  className="rounded-full"
-                >
-                  <List size={16} />
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Enhanced Projects Grid/List */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
-            className={`${
-              viewMode === 'grid' 
-                ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' 
-                : 'flex flex-col gap-6 max-w-4xl mx-auto'
-            }`}
-          >
-            <AnimatePresence mode="wait">
-              {paginatedProjects.map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  variants={itemVariants}
-                  layout
-                  className="group relative"
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                >
-                  {/* Enhanced Project Card */}
-                  <motion.div
-                    variants={cardHoverVariants}
-                    whileHover="hover"
-                    className={`rounded-2xl overflow-hidden bg-card/80 backdrop-blur-sm border border-muted/50 hover:border-primary/40 transition-all duration-500 shadow-xl hover:shadow-2xl will-change-transform ${
-                      viewMode === 'list' ? 'flex flex-row' : 'flex flex-col'
-                    }`}
-                    style={{
-                      transformStyle: "preserve-3d",
-                      rotateX: hoveredIndex === index ? rotateX : 0,
-                      rotateY: hoveredIndex === index ? rotateY : 0,
-                    }}
-                  >
-                    {/* Enhanced Card Header */}
-                    <div className={`relative overflow-hidden ${
-                      viewMode === 'list' ? 'w-1/3 h-48' : 'w-full h-64'
-                    }`}>
-                      {/* Dynamic Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 transition-all duration-500 group-hover:from-black/90"></div>
-                      
-                      {/* Project Image with Parallax Effect */}
-                      <motion.img
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-all duration-700 ease-out will-change-transform"
-                        whileHover={{ scale: 1.08 }}
-                        loading="lazy"
-                      />
-
-                      {/* Enhanced Badges */}
-                      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-                        <Badge className="bg-gradient-to-r from-primary to-purple-500 text-white hover:from-primary/90 hover:to-purple-500/90 font-alegreya uppercase tracking-wide py-1.5 px-4 shadow-lg border border-primary/20 backdrop-blur-sm">
-                          {project.category}
-                        </Badge>
-                        {project.status && (
-                          <Badge className={`font-poppins text-xs py-1.5 px-3 shadow-md backdrop-blur-sm ${
-                            project.status === 'Live' 
-                              ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white border-green-400/30'
-                              : project.status === 'In Development'
-                              ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white border-orange-400/30'
-                              : 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-400/30'
-                          }`}>
-                            {project.status}
-                          </Badge>
-                        )}
-                        {project.featured && (
-                          <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:from-yellow-600 hover:to-orange-600 font-poppins text-xs py-1.5 px-3 shadow-md border border-yellow-400/30 backdrop-blur-sm animate-pulse">
-                            <Crown size={12} className="mr-1" />
-                            Featured
-                          </Badge>
-                        )}
-                        {project.difficulty && (
-                          <Badge className={`font-poppins text-xs py-1.5 px-3 shadow-md backdrop-blur-sm ${
-                            project.difficulty === 'Beginner' 
-                              ? 'bg-gradient-to-r from-green-400 to-green-600 text-white'
-                              : project.difficulty === 'Intermediate'
-                              ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white'
-                              : project.difficulty === 'Advanced'
-                              ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-white'
-                              : 'bg-gradient-to-r from-red-400 to-red-600 text-white'
-                          }`}>
-                            {project.difficulty}
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Enhanced Action Buttons - PURPLE THEME */}
-                      <div className="absolute bottom-4 right-4 z-30 flex gap-3">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <motion.a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-11 h-11 rounded-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-xl border border-white/30 dark:border-gray-700/50 will-change-transform"
-                              whileHover={{
-                                scale: 1.15,
-                                backgroundColor: "rgb(147 51 234)",
-                                color: "white",
-                                boxShadow: "0 20px 25px -5px rgb(147 51 234 / 0.4), 0 10px 10px -5px rgb(147 51 234 / 0.1)",
-                                transition: { duration: 0.3 },
-                              }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <ExternalLink size={16} />
-                            </motion.a>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>View Live Site</p>
-                          </TooltipContent>
-                        </Tooltip>
-
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <motion.a
-                              href={project.sourceUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-11 h-11 rounded-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md text-gray-700 dark:text-gray-200 flex items-center justify-center shadow-xl border border-white/30 dark:border-gray-700/50 will-change-transform"
-                              whileHover={{
-                                scale: 1.15,
-                                backgroundColor: "rgb(147 51 234)",
-                                color: "white",
-                                boxShadow: "0 20px 25px -5px rgb(147 51 234 / 0.4), 0 10px 10px -5px rgb(147 51 234 / 0.1)",
-                                transition: { duration: 0.3 },
-                              }}
-                              whileTap={{ scale: 0.9 }}
-                            >
-                              <Code size={16} />
-                            </motion.a>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>View Source Code</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </div>
-
-                      {/* Project Stats */}
-                      <div className="absolute bottom-4 left-4 z-20 flex items-center gap-3 text-white/80">
-                        {project.views && (
-                          <div className="flex items-center gap-1 text-xs bg-black/30 backdrop-blur-sm rounded-full px-2 py-1">
-                            <Eye size={12} />
-                            <span>{project.views.toLocaleString()}</span>
-                          </div>
-                        )}
-                        {project.likes && (
-                          <div className="flex items-center gap-1 text-xs bg-black/30 backdrop-blur-sm rounded-full px-2 py-1">
-                            <Heart size={12} />
-                            <span>{project.likes}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Enhanced Card Content */}
-                    <div className={`p-6 ${viewMode === 'list' ? 'flex-1' : ''}`}>
-                      {/* Project Title with Advanced Animation */}
-                      <h3 className="font-alegreya font-bold text-xl mb-3 relative inline-block group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-purple-500 group-hover:bg-clip-text transition-all duration-300">
-                        {project.title}
-                        <motion.span
-                          className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-purple-500 rounded-full"
-                          initial={{ width: 0 }}
-                          whileHover={{ width: "100%" }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                        />
-                      </h3>
-
-                      {/* Project Description */}
-                      <p className="text-muted-foreground text-sm mb-5 line-clamp-3 leading-relaxed">
-                        {project.description}
-                      </p>
-
-                               {/* Project Metrics */}
-                      {project.metrics && (
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                          <div className="text-xs">
-                            <div className="flex justify-between mb-1">
-                              <span>Performance</span>
-                              <span>{project.metrics.performance}%</span>
-                            </div>
-                            <Progress value={project.metrics.performance} className="h-1" />
-                          </div>
-                          <div className="text-xs">
-                            <div className="flex justify-between mb-1">
-                              <span>SEO</span>
-                              <span>{project.metrics.seo}%</span>
-                            </div>
-                            <Progress value={project.metrics.seo} className="h-1" />
-                          </div>
-                          <div className="text-xs">
-                            <div className="flex justify-between mb-1">
-                              <span>Accessibility</span>
-                              <span>{project.metrics.accessibility}%</span>
-                            </div>
-                            <Progress value={project.metrics.accessibility} className="h-1" />
-                          </div>
-                          <div className="text-xs">
-                            <div className="flex justify-between mb-1">
-                              <span>Best Practices</span>
-                              <span>{project.metrics.bestPractices}%</span>
-                            </div>
-                            <Progress value={project.metrics.bestPractices} className="h-1" />
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Enhanced Technology Stack */}
-                      <div className="flex flex-wrap gap-2 mb-5">
-                        {project.technologies.slice(0, viewMode === 'list' ? 8 : 6).map((tech, techIndex) => (
-                          <motion.div
-                            key={techIndex}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            <Badge
-                              variant="secondary"
-                              className="rounded-full text-xs font-medium bg-gradient-to-r from-muted/80 to-muted/60 dark:from-muted/50 dark:to-muted/30 text-foreground dark:text-muted-foreground hover:from-primary/15 hover:to-purple-500/15 dark:hover:from-primary/10 dark:hover:to-purple-500/10 hover:text-primary border border-muted-foreground/20 dark:border-muted/40 hover:border-primary/40 transition-all duration-300 shadow-sm backdrop-blur-sm"
-                            >
-                              {tech}
-                            </Badge>
-                          </motion.div>
-                        ))}
-                        {project.technologies.length > (viewMode === 'list' ? 8 : 6) && (
-                          <Badge variant="outline" className="rounded-full text-xs">
-                            +{project.technologies.length - (viewMode === 'list' ? 8 : 6)} more
-                          </Badge>
-                        )}
-                      </div>
-
-                      {/* Project Actions */}
-                      <div className="flex items-center justify-between pt-4 border-t border-muted/50">
-                        <div className="flex items-center gap-2">
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleLike(project.id)}
-                                className={`rounded-full ${likedProjects.has(project.id) ? 'text-red-500' : ''}`}
-                              >
-                                <Heart size={16} className={likedProjects.has(project.id) ? 'fill-current' : ''} />
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{likedProjects.has(project.id) ? 'Unlike' : 'Like'} Project</p>
-                            </TooltipContent>
-                          </Tooltip>
-
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleBookmark(project.id)}
-                                className={`rounded-full ${bookmarkedProjects.has(project.id) ? 'text-yellow-500' : ''}`}
-                              >
-                                <Bookmark size={16} className={bookmarkedProjects.has(project.id) ? 'fill-current' : ''} />
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>{bookmarkedProjects.has(project.id) ? 'Remove Bookmark' : 'Bookmark'} Project</p>
-                            </TooltipContent>
-                          </Tooltip>
-
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleShare(project)}
-                                className="rounded-full"
-                              >
-                                <Share2 size={16} />
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Share Project</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </div>
-
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <motion.button
-                              className="text-primary hover:text-purple-500 transition-colors duration-300 flex items-center gap-2 text-sm font-semibold group/link"
-                              whileHover={{ x: 4 }}
-                            >
-                              <span>Explore Details</span>
-                              <ArrowRight
-                                size={16}
-                                className="transition-transform duration-300 group-hover/link:translate-x-2"
-                              />
-                            </motion.button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                            <DialogHeader>
-                              <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-500 text-transparent bg-clip-text">
-                                {project.title}
-                              </DialogTitle>
-                            </DialogHeader>
-                            
-                            <div className="space-y-6">
-                              {/* Project Image */}
-                              <div className="relative h-64 rounded-xl overflow-hidden">
-                                <img
-                                  src={project.image}
-                                  alt={project.title}
-                                  className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                                <div className="absolute bottom-4 left-4 text-white">
-                                  <h3 className="text-xl font-bold">{project.title}</h3>
-                                  <p className="text-sm opacity-90">{project.category}</p>
-                                </div>
-                              </div>
-
-                              {/* Project Details */}
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                  <h4 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Info size={16} />
-                                    Description
-                                  </h4>
-                                  <p className="text-muted-foreground text-sm leading-relaxed">
-                                    {project.longDescription || project.description}
-                                  </p>
-                                </div>
-
-                                <div>
-                                  <h4 className="font-semibold mb-2 flex items-center gap-2">
-                                    <Settings size={16} />
-                                    Project Info
-                                  </h4>
-                                  <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between">
-                                      <span className="flex items-center gap-1">
-                                        <Clock size={12} />
-                                        Duration:
-                                      </span>
-                                      <span>{project.duration}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="flex items-center gap-1">
-                                        <Users size={12} />
-                                        Team Size:
-                                      </span>
-                                      <span>{project.teamSize} members</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="flex items-center gap-1">
-                                        <Target size={12} />
-                                        Role:
-                                      </span>
-                                      <span>{project.role}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="flex items-center gap-1">
-                                        <CheckCircle size={12} />
-                                        Status:
-                                      </span>
-                                      <Badge variant="outline">{project.status}</Badge>
-                                    </div>
-                                    <div className="flex justify-between">
-                                      <span className="flex items-center gap-1">
-                                        <Calendar size={12} />
-                                        Date:
-                                      </span>
-                                      <span>{new Date(project.date).toLocaleDateString()}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              {/* Key Features */}
-                              {project.keyFeatures && (
-                                <div>
-                                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                    <Lightbulb size={16} />
-                                    Key Features
-                                  </h4>
-                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                    {project.keyFeatures.map((feature, index) => (
-                                      <div key={index} className="flex items-start gap-2 text-sm">
-                                        <CheckCircle size={16} className="text-green-500 mt-0.5 flex-shrink-0" />
-                                        <span>{feature}</span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Tech Stack */}
-                              {project.techStack && (
-                                <div>
-                                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                    <Code2 size={16} />
-                                    Technology Stack
-                                  </h4>
-                                  <Tabs defaultValue="frontend" className="w-full">
-                                    <TabsList className="grid w-full grid-cols-4">
-                                      <TabsTrigger value="frontend" className="flex items-center gap-1">
-                                        <Monitor size={12} />
-                                        Frontend
-                                      </TabsTrigger>
-                                      <TabsTrigger value="backend" className="flex items-center gap-1">
-                                        <Database size={12} />
-                                        Backend
-                                      </TabsTrigger>
-                                      <TabsTrigger value="database" className="flex items-center gap-1">
-                                        <Layers size={12} />
-                                        Database
-                                      </TabsTrigger>
-                                      <TabsTrigger value="deployment" className="flex items-center gap-1">
-                                        <Cloud size={12} />
-                                        Deploy
-                                      </TabsTrigger>
-                                    </TabsList>
-                                    <TabsContent value="frontend" className="mt-4">
-                                      <div className="flex flex-wrap gap-2">
-                                        {project.techStack.frontend?.map((tech, index) => (
-                                          <Badge key={index} variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                            {tech}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    </TabsContent>
-                                    <TabsContent value="backend" className="mt-4">
-                                      <div className="flex flex-wrap gap-2">
-                                        {project.techStack.backend?.map((tech, index) => (
-                                          <Badge key={index} variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                            {tech}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    </TabsContent>
-                                    <TabsContent value="database" className="mt-4">
-                                      <div className="flex flex-wrap gap-2">
-                                        {project.techStack.database?.map((tech, index) => (
-                                          <Badge key={index} variant="secondary" className="bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
-                                            {tech}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    </TabsContent>
-                                    <TabsContent value="deployment" className="mt-4">
-                                      <div className="flex flex-wrap gap-2">
-                                        {project.techStack.deployment?.map((tech, index) => (
-                                          <Badge key={index} variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200">
-                                            {tech}
-                                          </Badge>
-                                        ))}
-                                      </div>
-                                    </TabsContent>
-                                  </Tabs>
-                                </div>
-                              )}
-
-                              {/* Performance Metrics */}
-                              {project.metrics && (
-                                <div>
-                                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                    <TrendingUp size={16} />
-                                    Performance Metrics
-                                  </h4>
-                                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    {Object.entries(project.metrics).map(([key, value]) => (
-                                      <div key={key} className="text-center p-3 bg-muted/50 rounded-lg">
-                                        <div className="text-2xl font-bold text-primary">{value}%</div>
-                                        <div className="text-xs text-muted-foreground capitalize mb-2">{key}</div>
-                                        <Progress value={value} className="h-2" />
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Achievements */}
-                              {project.achievements && (
-                                <div>
-                                  <h4 className="font-semibold mb-3 flex items-center gap-2">
-                                    <Trophy size={16} />
-                                    Achievements
-                                  </h4>
-                                  <div className="flex flex-wrap gap-2">
-                                    {project.achievements.map((achievement, index) => (
-                                      <Badge key={index} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
-                                        <Award size={12} className="mr-1" />
-                                        {achievement}
-                                      </Badge>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-
-                              {/* Project Statistics */}
-                              <div className="grid grid-cols-3 gap-4 p-4 bg-muted/30 rounded-lg">
-                                <div className="text-center">
-                                  <div className="flex items-center justify-center gap-1 text-lg font-bold text-primary">
-                                    <Eye size={16} />
-                                    {project.views?.toLocaleString() || 0}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">Views</div>
-                                </div>
-                                <div className="text-center">
-                                  <div className="flex items-center justify-center gap-1 text-lg font-bold text-red-500">
-                                    <Heart size={16} />
-                                    {project.likes || 0}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">Likes</div>
-                                </div>
-                                <div className="text-center">
-                                  <div className="flex items-center justify-center gap-1 text-lg font-bold text-blue-500">
-                                    <Share2 size={16} />
-                                    {project.shares || 0}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">Shares</div>
-                                </div>
-                              </div>
-
-                              {/* Action Buttons */}
-                              <div className="flex gap-4 pt-4 border-t">
-                                <Button asChild className="flex-1 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90">
-                                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                                    <Globe size={16} className="mr-2" />
-                                    Visit Live Site
-                                  </a>
-                                </Button>
-                                <Button variant="outline" asChild className="flex-1">
-                                  <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer">
-                                    <Github size={16} className="mr-2" />
-                                    View Source
-                                  </a>
-                                </Button>
-                              </div>
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                  {/* Enhanced Glow Effect */}
-                  <AnimatePresence>
-                    {hoveredIndex === index && (
-                      <motion.div
-                        className="absolute -inset-2 bg-gradient-to-r from-primary/20 via-purple-500/20 to-primary/20 rounded-2xl blur-xl -z-10"
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.8 }}
-                        transition={{ duration: 0.4, ease: "easeOut" }}
-                      />
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="flex justify-center items-center gap-2 mt-12"
-            >
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                disabled={currentPage === 1}
-                className="rounded-full bg-background/50 backdrop-blur-sm"
-              >
-                Previous
-              </Button>
-              
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <Button
-                  key={page}
-                  variant={currentPage === page ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setCurrentPage(page)}
-                  className="rounded-full w-10 h-10 bg-background/50 backdrop-blur-sm"
-                >
-                  {page}
-                </Button>
-              ))}
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-                disabled={currentPage === totalPages}
-                className="rounded-full bg-background/50 backdrop-blur-sm"
-              >
-                Next
-              </Button>
-            </motion.div>
-          )}
-
-          {/* Enhanced CTA Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col items-center mt-20 space-y-6"
-          >
-            <div className="text-center mb-6">
-              <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-500 text-transparent bg-clip-text">
-                Ready to Collaborate?
-              </h3>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Let's work together to bring your ideas to life. I'm always excited to take on new challenges and create something amazing.
-              </p>
-            </div>
-            
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button
-                size="lg"
-                className="gap-3 rounded-full px-8 py-3 font-semibold shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 bg-gradient-to-r from-primary to-purple-500 hover:from-primary/90 hover:to-purple-500/90 group"
-              >
-                <span>View All Projects</span>
-                <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
-              
-              <Button
-                variant="outline"
-                size="lg"
-                className="gap-3 rounded-full px-8 py-3 font-semibold border-primary/40 hover:bg-primary/10 hover:border-primary transition-all duration-300 group"
-              >
-                <Download size={18} />
-                <span>Download Resume</span>
-              </Button>
-
-              <Button
-                variant="outline"
-                size="lg"
-                className="gap-3 rounded-full px-8 py-3 font-semibold border-purple-500/40 hover:bg-purple-500/10 hover:border-purple-500 transition-all duration-300 group"
-              >
-                <MessageCircle size={18} />
-                <span>Let's Talk</span>
-              </Button>
-            </div>
-
-            {/* Additional Stats or Social Proof */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="flex flex-wrap justify-center items-center gap-8 mt-8 pt-8 border-t border-muted/30"
-            >
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Users size={16} />
-                <span className="text-sm">50+ Happy Clients</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Trophy size={16} />
-                <span className="text-sm">Award Winning Projects</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Zap size={16} />
-                <span className="text-sm">Fast Delivery</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <CheckCircle size={16} />
-                <span className="text-sm">100% Satisfaction</span>
-              </div>
-            </motion.div>
-          </motion.div>
+                {/* OPTIMIZED Glow effect on hover */}
+                <AnimatePresence>
+                  {hoveredIndex === index && (
+                    <motion.div
+                      className="absolute -inset-1 bg-gradient-to-r from-primary/15 to-primary/25 rounded-xl blur-lg -z-10"
+                      initial={{ opacity: 0, scale: 0.3 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.3 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* Custom Styles */}
-        <style jsx>{`
-          @keyframes gradient-x {
-            0%, 100% {
-              background-position: 0% 50%;
-            }
-            50% {
-              background-position: 100% 50%;
-            }
-          }
-          .animate-gradient-x {
-            animation: gradient-x 3s ease infinite;
-          }
-          .bg-300% {
-            background-size: 300% 300%;
-          }
-          .bg-grid-pattern {
-            background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-          }
-          .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-          .line-clamp-3 {
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-        `}</style>
-      </section>
-    </TooltipProvider>
+        {/* "View All Projects" button with enhanced design */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex justify-center mt-16"
+        >
+          <Button
+            size="lg"
+            className="gap-2 rounded-full px-8 font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-shadow group"
+          >
+            View All Projects
+            <span className="relative transition-all duration-300 group-hover:translate-x-1">
+              <ArrowRight size={16} />
+            </span>
+          </Button>
+        </motion.div>
+      </div>
+    </section>
   );
 };
 
