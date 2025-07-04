@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -55,8 +55,7 @@
   }
 
   body {
-    @apply antialiased bg-background text-foreground;
-    font-family: "Poppins", "Kalisto", system-ui, sans-serif;
+    @apply font-inter antialiased bg-background text-foreground;
     overflow-x: hidden;
     margin: 0;
     padding: 0;
@@ -71,19 +70,10 @@
     box-sizing: border-box;
   }
 
-  /* Apply Poppins font with Kalisto fallback to all text elements */
-  h1, h2, h3, h4, h5, h6 {
-    font-family: "Poppins", "Kalisto", sans-serif;
-  }
-
-  p, span, div, a, button, input, textarea, label, li, td, th {
-    font-family: "Poppins", "Kalisto", sans-serif;
-  }
-
-  /* Specific font assignments for different content types */
-  .description, .text-muted-foreground, .lead, blockquote, 
+  /* Apply Poppins font to all descriptive text elements */
+  p, .description, .text-muted-foreground, .lead, blockquote, 
   .timeline-description, .project-description, .skill-description {
-    font-family: "Poppins", "Kalisto", sans-serif;
+    font-family: "Poppins", sans-serif;
   }
 
   section {
