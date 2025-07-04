@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        inter: ["Inter", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
-        alegreya: ["Alegreya Sans SC", "sans-serif"],
+        sans: ["Poppins", "Kalisto", "system-ui", "sans-serif"],
+        poppins: ["Poppins", "Kalisto", "sans-serif"],
+        alegreya: ["Alegreya Sans SC", "Poppins", "Kalisto", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
