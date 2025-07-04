@@ -340,12 +340,7 @@ const AboutSection = () => {
                 initial={{ opacity: 0, y: -30, scale: 0.8 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ 
-                  delay: 0.5, 
-                  duration: 0.6, 
-                  type: "spring",
-                  boxShadow: { duration: 3, repeat: Infinity }
-                }}
+                transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
                 whileHover={{
                   scale: 1.1,
                   boxShadow: "0 20px 40px -10px rgba(255, 193, 7, 0.4)",
@@ -357,6 +352,9 @@ const AboutSection = () => {
                     "0 15px 35px -10px rgba(255, 152, 0, 0.4)",
                     "0 10px 30px -10px rgba(255, 193, 7, 0.3)",
                   ],
+                }}
+                transition={{
+                  boxShadow: { duration: 3, repeat: Infinity },
                 }}
               >
                 <Trophy className="text-white drop-shadow-lg" size={24} />
