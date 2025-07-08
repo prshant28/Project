@@ -21,6 +21,8 @@ function App() {
       <TooltipProvider>
         <div className="relative min-h-screen w-full overflow-x-hidden">
           <ParticleSystem />
+          {/* Add padding top to account for rounded header */}
+          <div style={{ paddingTop: '100px' }}>
           <Navbar />
           <main className="w-full overflow-x-hidden">
             <HeroSection />
@@ -34,6 +36,7 @@ function App() {
             <ContactSection />
           </main>
           <Footer />
+          </div>
         </div>
         <Toaster />
       </TooltipProvider>
