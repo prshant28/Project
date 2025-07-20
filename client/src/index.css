@@ -497,15 +497,17 @@
     }
   }
 
-  /* Apply Rajdhani font to all descriptive text elements */
-  p, .description, .text-muted-foreground, .lead, blockquote, 
-  .timeline-description, .project-description, .skill-description {
-    font-family: "Rajdhani", sans-serif;
+  /* Apply Alegreya Sans SC font to all headings */
+  h1, h2, h3, h4, h5, h6, .heading, .title, .font-alegreya {
+    font-family: "Alegreya Sans SC", sans-serif;
   }
 
-  /* Apply Rajdhani font to all buttons and links */
+  /* Apply Rajdhani font to all other text elements */
+  body, p, .description, .text-muted-foreground, .lead, blockquote, 
+  .timeline-description, .project-description, .skill-description,
   button, .button, a, .btn, input[type="button"], input[type="submit"], 
-  .nav-pill, .hire-button, .mobile-hire-btn, .mobile-nav-link {
+  .nav-pill, .hire-button, .mobile-hire-btn, .mobile-nav-link,
+  span, div, li, td, th, label, input, textarea, select {
     font-family: "Rajdhani", sans-serif;
   }
 
