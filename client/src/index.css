@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&family=Alegreya+Sans+SC:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -430,7 +430,7 @@
   }
   
   .mobile-footer-text p:last-child {
-    font-family: "Poppins", sans-serif;
+   font-family: "Rajdhani", sans-serif;
     opacity: 0.7;
   }
   
@@ -497,10 +497,10 @@
     }
   }
 
-  /* Apply Poppins font to all descriptive text elements */
+  /* Apply Rajdhani font to all descriptive text elements */
   p, .description, .text-muted-foreground, .lead, blockquote, 
   .timeline-description, .project-description, .skill-description {
-    font-family: "Poppins", sans-serif;
+     font-family: "Rajdhani", sans-serif;
   }
 
   section {
