@@ -56,7 +56,7 @@ const Navbar = () => {
   return (
     <>
       {/* Rounded Header Container */}
-      <div className="fixed top-4 left-4 right-4 z-50">
+      <div className="fixed top-2 left-2 right-2 z-50">
         <div className="rounded-header-container">
           {/* Main Header Content */}
           <div className="rounded-header-content">
