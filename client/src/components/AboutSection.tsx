@@ -42,7 +42,6 @@ const AboutSection = () => {
     { id: "overview", name: "Overview", icon: Users },
     { id: "journey", name: "Journey", icon: Rocket },
     { id: "achievements", name: "Achievements", icon: Trophy },
-    { id: "skills", name: "Skills", icon: Brain },
   ];
 
   const personalStats = [
@@ -103,14 +102,7 @@ const AboutSection = () => {
     },
   ];
 
-  const skills = [
-    { name: "Full-Stack Development", level: 95, category: "Development" },
-    { name: "AI Tools Integration", level: 98, category: "AI/ML" },
-    { name: "React & Vue.js", level: 92, category: "Frontend" },
-    { name: "Node.js & Python", level: 90, category: "Backend" },
-    { name: "Database Design", level: 85, category: "Database" },
-    { name: "Cloud Deployment", level: 88, category: "DevOps" },
-  ];
+  
 
   const achievements = [
     {
@@ -291,9 +283,9 @@ const AboutSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Main Profile Section - UPDATED */}
+        {/* Main Profile Section - SIMPLIFIED & POWERFUL */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-          {/* Profile Image with Advanced Hexagonal Shape */}
+          {/* Profile Image with Clean Circular Design */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -301,180 +293,87 @@ const AboutSection = () => {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="relative max-w-lg mx-auto">
-              {/* Multiple animated background layers */}
+            <div className="relative max-w-sm mx-auto">
+              {/* Single elegant background glow */}
               <motion.div
-                className="absolute -inset-8 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 rounded-full blur-3xl"
+                className="absolute -inset-8 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-2xl"
                 animate={{
-                  rotate: [0, 360],
                   scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.6, 0.3],
+                  opacity: [0.4, 0.7, 0.4],
                 }}
                 transition={{
-                  duration: 20,
+                  duration: 8,
                   repeat: Infinity,
-                  ease: "linear",
+                  ease: "easeInOut",
                 }}
               />
 
+              {/* Achievement Badge - Top */}
               <motion.div
-                className="absolute -inset-6 bg-gradient-to-l from-secondary/25 via-primary/25 to-accent/25 blur-2xl"
-                style={{
-                  clipPath:
-                    "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                }}
-                animate={{
-                  rotate: [360, 0],
-                  scale: [1.1, 0.9, 1.1],
-                }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-              />
-
-              {/* Floating achievement badge - MOVED TO TOP */}
-              <motion.div
-                className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-500 p-4 rounded-2xl shadow-2xl flex items-center gap-3 border-2 border-yellow-300/50 z-20"
-                initial={{ opacity: 0, y: -30, scale: 0.8 }}
+                className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-orange-500 px-4 py-2 rounded-full shadow-lg flex items-center gap-2 border-2 border-yellow-300/50 z-20"
+                initial={{ opacity: 0, y: -20, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.6, type: "spring" }}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 20px 40px -10px rgba(255, 193, 7, 0.4)",
-                  y: -5,
-                }}
-                animate={{
-                  boxShadow: [
-                    "0 10px 30px -10px rgba(255, 193, 7, 0.3)",
-                    "0 15px 35px -10px rgba(255, 152, 0, 0.4)",
-                    "0 10px 30px -10px rgba(255, 193, 7, 0.3)",
-                  ],
-                }}
-                transition={{
-                  boxShadow: { duration: 3, repeat: Infinity },
-                }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+                whileHover={{ scale: 1.05, y: -2 }}
               >
-                <Trophy className="text-white drop-shadow-lg" size={24} />
-                <div className="text-white">
-                  <div className="font-bold text-lg leading-tight">Rank 2</div>
-                  <div className="text-sm font-medium opacity-90">
-                    Global Winner
-                  </div>
-                </div>
-                <motion.div
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full"
-                  animate={{
-                    scale: [1, 1.3, 1],
-                    opacity: [1, 0.7, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                  }}
-                />
+                <Trophy className="text-white" size={18} />
+                <div className="text-white font-bold text-sm">Rank 2 Global</div>
               </motion.div>
 
-              {/* Profile image container with Hexagonal Shape */}
+              {/* Main Profile Circle */}
               <motion.div
-                className="relative z-10 overflow-hidden shadow-2xl shadow-primary/30"
+                className="relative z-10 w-80 h-80 rounded-full overflow-hidden border-4 border-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/30"
                 style={{
-                  clipPath:
-                    "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                  background:
-                    "linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)))",
+                  background: "linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)))",
                   padding: "4px",
                 }}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: 5,
-                }}
-                animate={{
-                  boxShadow: [
-                    "0 25px 50px -12px rgba(var(--primary), 0.25)",
-                    "0 25px 50px -12px rgba(var(--secondary), 0.25)",
-                    "0 25px 50px -12px rgba(var(--primary), 0.25)",
-                  ],
-                }}
-                transition={{
-                  boxShadow: { duration: 4, repeat: Infinity },
-                  hover: { duration: 0.3 },
-                }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               >
-                <motion.div
-                  className="relative overflow-hidden"
-                  style={{
-                    clipPath:
-                      "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                  }}
-                >
+                <div className="w-full h-full rounded-full overflow-hidden relative">
                   <motion.img
                     src={profileImage}
                     alt="Prashant - Full-Stack Developer & AI Expert"
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover"
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.4 }}
                   />
 
-                  {/* Hover overlay effect */}
+                  {/* Subtle hover overlay */}
                   <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-secondary/20 opacity-0"
+                    className="absolute inset-0 bg-gradient-to-tr from-primary/10 via-transparent to-secondary/10 opacity-0"
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
                   />
-                </motion.div>
-              </motion.div>
-
-              {/* AI Tools badge - repositioned */}
-              <motion.div
-                className="absolute bottom-8 -left-6 bg-gradient-to-r from-purple-500 to-indigo-600 p-3 rounded-xl shadow-lg flex items-center gap-2 border border-purple-300/30 backdrop-blur-sm"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.8, duration: 0.5 }}
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 10px 30px -10px rgba(139, 69, 19, 0.3)",
-                }}
-              >
-                <Brain className="text-white" size={20} />
-                <div className="text-white">
-                  <div className="font-bold">100+</div>
-                  <div className="text-xs font-medium">AI Tools</div>
                 </div>
               </motion.div>
 
-              {/* Decorative floating elements */}
+              {/* AI Tools Badge - Bottom Left */}
               <motion.div
-                className="absolute top-1/4 -right-8 w-6 h-6 bg-gradient-to-r from-primary to-secondary rounded-full opacity-60"
-                animate={{
-                  y: [0, -20, 0],
-                  scale: [1, 1.2, 1],
-                  opacity: [0.6, 1, 0.6],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+                className="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-500 to-indigo-600 px-3 py-2 rounded-xl shadow-lg flex items-center gap-2 border border-purple-300/30 z-20"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Brain className="text-white" size={16} />
+                <div className="text-white text-sm font-bold">100+ AI Tools</div>
+              </motion.div>
 
+              {/* Experience Badge - Bottom Right */}
               <motion.div
-                className="absolute bottom-1/4 -left-4 w-4 h-4 bg-gradient-to-r from-secondary to-accent rounded-full opacity-50"
-                animate={{
-                  y: [0, 15, 0],
-                  scale: [1, 0.8, 1],
-                  opacity: [0.5, 0.8, 0.5],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
-                }}
-              />
+                className="absolute -bottom-4 -right-4 bg-gradient-to-r from-green-500 to-emerald-600 px-3 py-2 rounded-xl shadow-lg flex items-center gap-2 border border-green-300/30 z-20"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <Code className="text-white" size={16} />
+                <div className="text-white text-sm font-bold">3+ Years</div>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -660,37 +559,7 @@ const AboutSection = () => {
               </div>
             )}
 
-            {activeTab === "skills" && (
-              <div className="space-y-6">
-                {skills.map((skill, index) => (
-                  <motion.div
-                    key={skill.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                    className="space-y-2"
-                  >
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">{skill.name}</span>
-                      <span className="text-sm text-muted-foreground">
-                        {skill.category}
-                      </span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${skill.level}%` }}
-                        transition={{ delay: index * 0.1 + 0.3, duration: 1 }}
-                        className="bg-gradient-to-r from-primary to-secondary h-2 rounded-full"
-                      />
-                    </div>
-                    <div className="text-right text-xs text-primary font-medium">
-                      {skill.level}%
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
+            
 
             {activeTab === "achievements" && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
