@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Code, ArrowRight, Filter } from "lucide-react";
+import { ExternalLink, Code, ArrowRight, Filter, Grid3X3, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects } from "@/data/projects";
@@ -8,6 +8,7 @@ import { projects } from "@/data/projects";
 const ProjectsSection = () => {
   const [filter, setFilter] = useState<string>("all");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // Get unique categories from projects
   const categories = [
@@ -73,36 +74,75 @@ const ProjectsSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Filter buttons - IMPROVED VISIBILITY */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
-        >
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={filter === category ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter(category)}
-              className={`rounded-full font-alegreya uppercase text-xs tracking-wider px-6 transition-all duration-200 ${
-                filter === category
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-primary"
-                  : "hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border-primary/40 dark:border-primary/20 bg-background/80 dark:bg-muted/20"
-              }`}
-            >
-              {category === "all" ? "All" : category}
-              {filter === category && (
-                <span className="ml-2 flex h-2 w-2 rounded-full bg-primary-foreground"></span>
-              )}
-            </Button>
-          ))}
-        </motion.div>
+        {/* Filter and View Toggle Controls */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-12">
+          {/* Filter buttons - IMPROVED VISIBILITY */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex flex-wrap justify-center gap-3"
+          >
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={filter === category ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilter(category)}
+                className={`rounded-full font-alegreya uppercase text-xs tracking-wider px-6 transition-all duration-200 ${
+                  filter === category
+                    ? "bg-primary text-primary-foreground shadow-lg shadow-primary/25 border-primary"
+                    : "hover:bg-primary/15 dark:hover:bg-primary/10 hover:text-primary border-primary/40 dark:border-primary/20 bg-background/80 dark:bg-muted/20"
+                }`}
+              >
+                {category === "all" ? "All" : category}
+                {filter === category && (
+                  <span className="ml-2 flex h-2 w-2 rounded-full bg-primary-foreground"></span>
+                )}
+              </Button>
+            ))}
+          </motion.div>
 
-        {/* Projects grid with staggered animation */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* View Toggle Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="flex items-center gap-2 bg-muted/30 p-1 rounded-full border border-border/30"
+          >
+            <Button
+              variant={viewMode === "grid" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("grid")}
+              className={`rounded-full p-2 h-8 w-8 transition-all duration-200 ${
+                viewMode === "grid"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "hover:bg-primary/10 text-muted-foreground hover:text-primary"
+              }`}
+              aria-label="Grid view"
+            >
+              <Grid3X3 size={14} />
+            </Button>
+            <Button
+              variant={viewMode === "list" ? "default" : "ghost"}
+              size="sm"
+              onClick={() => setViewMode("list")}
+              className={`rounded-full p-2 h-8 w-8 transition-all duration-200 ${
+                viewMode === "list"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "hover:bg-primary/10 text-muted-foreground hover:text-primary"
+              }`}
+              aria-label="List view"
+            >
+              <List size={14} />
+            </Button>
+          </motion.div>
+        </div>
+
+        {/* Projects grid/list with staggered animation */}
+        <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" : "space-y-6"}>
           <AnimatePresence>
             {filteredProjects.map((project, index) => (
               <motion.div
@@ -118,7 +158,9 @@ const ProjectsSection = () => {
               >
                 {/* Project Card with FIXED hover effects */}
                 <motion.div
-                  className="rounded-xl overflow-hidden bg-card border border-muted hover:border-primary/30 transition-all duration-300 shadow-lg hover:shadow-xl will-change-transform"
+                  className={`rounded-xl overflow-hidden bg-card border border-muted hover:border-primary/30 transition-all duration-300 shadow-lg hover:shadow-xl will-change-transform ${
+                    viewMode === "list" ? "flex flex-col sm:flex-row" : ""
+                  }`}
                   whileHover={{
                     y: -8,
                     transition: {
@@ -130,7 +172,9 @@ const ProjectsSection = () => {
                   style={{ transformOrigin: "center" }}
                 >
                   {/* Card Header with Image */}
-                  <div className="relative h-56 overflow-hidden">
+                  <div className={`relative overflow-hidden ${
+                    viewMode === "list" ? "h-48 sm:h-auto sm:w-80 flex-shrink-0" : "h-56"
+                  }`}>
                     {/* Overlay gradient - FIXED */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 transition-opacity duration-300 group-hover:from-black/70"></div>
                     
@@ -148,12 +192,12 @@ const ProjectsSection = () => {
                         {project.category}
                       </Badge>
                       {project.status && (
-                        <Badge className="bg-orange-600 text-white hover:bg-orange-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-orange-500/30">
+                        <Badge className="bg-orange-600 text-white hover:bg-orange-700 font-rajdhani text-xs py-1 px-2.5 shadow-md border border-orange-500/30">
                           {project.status}
                         </Badge>
                       )}
                       {project.featured && (
-                        <Badge className="bg-green-600 text-white hover:bg-green-700 font-poppins text-xs py-1 px-2.5 shadow-md border border-green-500/30">
+                        <Badge className="bg-green-600 text-white hover:bg-green-700 font-rajdhani text-xs py-1 px-2.5 shadow-md border border-green-500/30">
                           Featured
                         </Badge>
                       )}
@@ -197,7 +241,7 @@ const ProjectsSection = () => {
                   </div>
 
                   {/* Card Content */}
-                  <div className="p-6">
+                  <div className={`p-6 ${viewMode === "list" ? "flex-1" : ""}`}>
                     {/* Project title with SMOOTH animated underline */}
                     <h3 className="font-alegreya font-bold text-xl mb-2 relative inline-block group-hover:text-primary transition-colors duration-300">
                       {project.title}
@@ -205,7 +249,9 @@ const ProjectsSection = () => {
                     </h3>
 
                     {/* Project description */}
-                    <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                    <p className={`text-muted-foreground text-sm mb-4 ${
+                      viewMode === "list" ? "line-clamp-3" : "line-clamp-2"
+                    }`}>
                       {project.description}
                     </p>
 
