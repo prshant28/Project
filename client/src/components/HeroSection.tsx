@@ -81,19 +81,19 @@ const HeroSection = () => {
     }
   };
 
-  // Reduced particles for better performance
-  const particles = Array.from({ length: 8 }).map((_, i) => ({
-    size: Math.random() * 4 + 2,
+  // Minimal particles for optimal performance
+  const particles = Array.from({ length: 3 }).map((_, i) => ({
+    size: Math.random() * 2 + 1,
     x: Math.random() * 100,
     y: Math.random() * 100,
-    duration: Math.random() * 10 + 8,
-    delay: Math.random() * 1,
+    duration: Math.random() * 12 + 8,
+    delay: Math.random() * 2,
   }));
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center pt-16 sm:pt-20 pb-12 sm:pb-16 relative overflow-hidden w-full"
+      className="min-h-screen flex items-center pt-20 sm:pt-24 pb-12 sm:pb-16 relative overflow-hidden w-full"
     >
       {/* Optimized particles background */}
       {particles.map((particle, index) => (
@@ -119,10 +119,9 @@ const HeroSection = () => {
         />
       ))}
 
-      {/* Optimized background gradients */}
-      <div className="absolute top-20 left-10 w-80 h-80 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 blur-3xl"></div>
-      <div className="absolute top-40 right-10 w-72 h-72 rounded-full bg-gradient-to-l from-secondary/10 to-secondary/5 blur-3xl"></div>
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-96 h-32 rounded-full bg-gradient-to-t from-accent/8 via-primary/4 to-transparent blur-3xl"></div>
+      {/* Simplified background gradients */}
+      <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-primary/3 blur-xl"></div>
+      <div className="absolute top-40 right-10 w-40 h-40 rounded-full bg-secondary/3 blur-xl"></div>
 
       <div className="container mx-auto relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 lg:gap-12 items-center w-full">
