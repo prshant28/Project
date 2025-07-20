@@ -430,7 +430,7 @@
   }
   
   .mobile-footer-text p:last-child {
-   font-family: "Rajdhani", sans-serif;
+    font-family: "Rajdhani", sans-serif;
     opacity: 0.7;
   }
   
@@ -500,7 +500,13 @@
   /* Apply Rajdhani font to all descriptive text elements */
   p, .description, .text-muted-foreground, .lead, blockquote, 
   .timeline-description, .project-description, .skill-description {
-     font-family: "Rajdhani", sans-serif;
+    font-family: "Rajdhani", sans-serif;
+  }
+
+  /* Apply Rajdhani font to all buttons and links */
+  button, .button, a, .btn, input[type="button"], input[type="submit"], 
+  .nav-pill, .hire-button, .mobile-hire-btn, .mobile-nav-link {
+    font-family: "Rajdhani", sans-serif;
   }
 
   section {
