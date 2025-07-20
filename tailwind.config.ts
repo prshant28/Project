@@ -15,7 +15,7 @@ export default {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
-        poppins: ["Poppins", "sans-serif"],
+        rajdhani: ["Rajdhani", "sans-serif"],
         alegreya: ["Alegreya Sans SC", "sans-serif"],
       },
       borderRadius: {
