@@ -27,9 +27,8 @@ function App() {
           <main className="w-full overflow-x-hidden">
             <HeroSection />
             <ProjectsSection />
-            <TechStackCarousel />
             <SkillsSection />
-            <Timeline />
+            <TechStackCarousel />
             <AboutSection />
             <EducationSection />
             <BlogSection />
