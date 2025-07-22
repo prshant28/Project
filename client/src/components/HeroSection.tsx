@@ -34,7 +34,6 @@ const HeroSection = () => {
   const typingTexts = [
     "Full-Stack Developer",
     "AI Tools Expert", 
-    "Founder & CEO",
     "Tech Innovator",
     "Solutions Architect",
     "Creative Thinker",
