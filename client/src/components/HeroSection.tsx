@@ -42,25 +42,6 @@ const HeroSection = () => {
     "Frontend Developer"
   ];
 
-  // Features/services grid items
-  const features = [
-    {
-      icon: Code,
-      title: "Full-Stack Development",
-      description: "3+ years building scalable web applications",
-    },
-    {
-      icon: Sparkles,
-      title: "AI Integration",
-      description: "Expert in 100+ AI tools for real-world solutions",
-    },
-    {
-      icon: Trophy,
-      title: "Global Recognition",
-      description: "Rank 2 Global Winner - Horizon App Hackathon",
-    },
-  ];
-
   // Achievement stats
   const stats = [
     { value: "3+", label: "Years Experience" },
