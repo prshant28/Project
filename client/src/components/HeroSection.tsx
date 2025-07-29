@@ -61,6 +61,25 @@ const HeroSection = () => {
     }
   };
 
+  // Features data
+  const features = [
+    {
+      title: "Full-Stack Development",
+      description: "Building complete web applications with modern technologies and best practices.",
+      icon: Code,
+    },
+    {
+      title: "UI/UX Design",
+      description: "Creating beautiful, intuitive interfaces that provide exceptional user experiences.",
+      icon: Palette,
+    },
+    {
+      title: "AI Integration",
+      description: "Leveraging cutting-edge AI tools and technologies to create innovative solutions.",
+      icon: Lightbulb,
+    },
+  ];
+
   // Minimal particles for optimal performance
   const particles = Array.from({ length: 3 }).map((_, i) => ({
     size: Math.random() * 2 + 1,
