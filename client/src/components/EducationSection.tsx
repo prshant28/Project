@@ -61,7 +61,7 @@ const EducationSection = () => {
       level: "Schooling",
       degree: "Class 10 & 12 (PCM Stream)",
       institution: "Shri Vishwanath Inter College",
-      duration: "2020 - 2022",
+      duration: "2018 - 2022",
       location: "Kalan, Sultanpur, Uttar Pradesh",
       focus: "Physics, Chemistry, Mathematics",
       type: "foundation",
