@@ -285,7 +285,7 @@ const AboutSection = () => {
 
         {/* Main Profile Section - SIMPLIFIED & POWERFUL */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
-          {/* Profile Image with Clean Circular Design */}
+          {/* Profile Image with Vertical Rounded Rectangle Design */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -294,9 +294,9 @@ const AboutSection = () => {
             className="relative"
           >
             <div className="relative max-w-sm mx-auto">
-              {/* Single elegant background glow */}
+              {/* Single elegant background glow - vertical shape */}
               <motion.div
-                className="absolute -inset-8 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-full blur-2xl"
+                className="absolute -inset-8 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-3xl blur-2xl"
                 animate={{
                   scale: [1, 1.1, 1],
                   opacity: [0.4, 0.7, 0.4],
@@ -307,6 +307,64 @@ const AboutSection = () => {
                   ease: "easeInOut",
                 }}
               />
+
+              {/* Decorative Doodles - Top Left */}
+              <motion.div
+                className="absolute -top-8 -left-8 text-primary/40 z-15"
+                initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                animate={{ rotate: [0, 5, -5, 0], y: [0, -2, 2, 0] }}
+              >
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <path d="M20 5L25 15L35 15L27.5 22.5L30 32.5L20 27.5L10 32.5L12.5 22.5L5 15L15 15L20 5Z" fill="currentColor" />
+                </svg>
+              </motion.div>
+
+              {/* Decorative Doodles - Top Right */}
+              <motion.div
+                className="absolute -top-6 -right-10 text-secondary/40 z-15"
+                initial={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+                animate={{ rotate: [0, -8, 8, 0], x: [0, 2, -2, 0] }}
+              >
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                  <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
+                  <circle cx="16" cy="16" r="4" fill="currentColor" />
+                </svg>
+              </motion.div>
+
+              {/* Decorative Doodles - Left */}
+              <motion.div
+                className="absolute top-16 -left-12 text-accent/40 z-15"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 0.9, 1] }}
+              >
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                  <path d="M14 2L16 12L26 14L16 16L14 26L12 16L2 14L12 12L14 2Z" fill="currentColor" />
+                </svg>
+              </motion.div>
+
+              {/* Decorative Doodles - Right */}
+              <motion.div
+                className="absolute top-24 -right-8 text-primary/40 z-15"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                animate={{ y: [0, -3, 3, 0], rotate: [0, 5, -5, 0] }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
+                  <circle cx="12" cy="12" r="3" fill="currentColor" />
+                </svg>
+              </motion.div>
 
               {/* Achievement Badge - Top */}
               <motion.div
@@ -321,22 +379,22 @@ const AboutSection = () => {
                 <div className="text-white font-bold text-sm">Rank 2 Global</div>
               </motion.div>
 
-              {/* Main Profile Circle */}
+              {/* Main Profile Vertical Rectangle */}
               <motion.div
-                className="relative z-10 w-80 h-80 rounded-full overflow-hidden border-4 border-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/30"
+                className="relative z-10 w-72 h-96 rounded-3xl overflow-hidden border-4 border-gradient-to-r from-primary to-secondary shadow-2xl shadow-primary/30"
                 style={{
                   background: "linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)))",
                   padding: "4px",
                 }}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <div className="w-full h-full rounded-full overflow-hidden relative">
+                <div className="w-full h-full rounded-3xl overflow-hidden relative">
                   <motion.img
                     src={profileImage}
                     alt="Prashant - Full-Stack Developer & AI Expert"
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.1 }}
+                    className="w-full h-full object-cover object-center"
+                    whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.4 }}
                   />
 
@@ -373,6 +431,33 @@ const AboutSection = () => {
               >
                 <Code className="text-white" size={16} />
                 <div className="text-white text-sm font-bold">3+ Years</div>
+              </motion.div>
+
+              {/* Bottom Decorative Doodles */}
+              <motion.div
+                className="absolute -bottom-8 -left-6 text-secondary/40 z-15"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1, duration: 0.6 }}
+                animate={{ rotate: [0, -5, 5, 0], scale: [1, 1.05, 0.95, 1] }}
+              >
+                <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                  <path d="M18 6L21 15L30 15L24 21L27 30L18 25.5L9 30L12 21L6 15L15 15L18 6Z" stroke="currentColor" strokeWidth="2" fill="none" />
+                </svg>
+              </motion.div>
+
+              <motion.div
+                className="absolute -bottom-6 -right-8 text-accent/40 z-15"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 1.2, duration: 0.6 }}
+                animate={{ x: [0, 2, -2, 0], y: [0, -1, 1, 0] }}
+              >
+                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                  <path d="M15 3L18 12L27 15L18 18L15 27L12 18L3 15L12 12L15 3Z" stroke="currentColor" strokeWidth="2" fill="currentColor" opacity="0.3" />
+                </svg>
               </motion.div>
             </div>
           </motion.div>
