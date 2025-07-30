@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import TypingEffect from "./TypingEffect";
 import profileImage from "../assets/profile-new.png";
+import roseNameImage from "../assets/rose-name.avif";
 import { useState, useEffect } from "react";
 
 const HeroSection = () => {
@@ -33,13 +34,13 @@ const HeroSection = () => {
   // Texts for the typing effect
   const typingTexts = [
     "Full-Stack Developer",
-    "AI Tools Expert", 
+    "AI Tools Expert",
     "Tech Innovator",
     "Solutions Architect",
     "Creative Thinker",
-    "UI/UX Designer", 
+    "UI/UX Designer",
     "Brand Strategist",
-    "Frontend Developer"
+    "Frontend Developer",
   ];
 
   // Achievement stats
@@ -65,17 +66,20 @@ const HeroSection = () => {
   const features = [
     {
       title: "Full-Stack Development",
-      description: "Building complete web applications with modern technologies and best practices.",
+      description:
+        "Building complete web applications with modern technologies and best practices.",
       icon: Code,
     },
     {
       title: "UI/UX Design",
-      description: "Creating beautiful, intuitive interfaces that provide exceptional user experiences.",
+      description:
+        "Creating beautiful, intuitive interfaces that provide exceptional user experiences.",
       icon: Palette,
     },
     {
       title: "AI Integration",
-      description: "Leveraging cutting-edge AI tools and technologies to create innovative solutions.",
+      description:
+        "Leveraging cutting-edge AI tools and technologies to create innovative solutions.",
       icon: Lightbulb,
     },
   ];
@@ -148,8 +152,20 @@ const HeroSection = () => {
                 transition={{ delay: 0.1, duration: 0.5 }}
               >
                 <div className="text-foreground">Hello, It's Me</div>
-                <div className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
-                  Prashant
+                <div className="flex items-center justify-center md:justify-start gap-3">
+                  <span className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text tracking-wider">
+                    Prashant
+                  </span>
+                  {/* Rose at the end of name */}
+                  <motion.img
+                    src={roseNameImage}
+                    alt="Decorative rose"
+                    className="w-12 h-12 md:w-14 md:h-14 object-cover"
+                    initial={{ opacity: 0, scale: 0.5, rotate: -20 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                  />
                 </div>
               </motion.h1>
 
@@ -195,7 +211,11 @@ const HeroSection = () => {
                         <motion.div
                           className="absolute -inset-2 border border-primary/20 rounded-full"
                           animate={{ rotate: [0, 360] }}
-                          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                          transition={{
+                            duration: 20,
+                            repeat: Infinity,
+                            ease: "linear",
+                          }}
                         />
                       </>
                     )}
@@ -207,14 +227,16 @@ const HeroSection = () => {
                           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                         </div>
                       )}
-                      
+
                       {imageError && (
                         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
                           <div className="text-center">
                             <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-2">
                               <Star className="text-primary" size={24} />
                             </div>
-                            <div className="text-sm text-muted-foreground">Prashant</div>
+                            <div className="text-sm text-muted-foreground">
+                              Prashant
+                            </div>
                           </div>
                         </div>
                       )}
@@ -223,9 +245,9 @@ const HeroSection = () => {
                         src={profileImage}
                         alt="Prashant - Full-Stack Developer & AI Expert"
                         className="w-full h-full object-cover"
-                        style={{ 
+                        style={{
                           opacity: imageLoaded ? 1 : 0,
-                          transition: 'opacity 0.3s ease-in-out'
+                          transition: "opacity 0.3s ease-in-out",
                         }}
                         onLoad={() => setImageLoaded(true)}
                         onError={() => setImageError(true)}
@@ -244,8 +266,12 @@ const HeroSection = () => {
                           transition={{ delay: 0.3, duration: 0.4 }}
                         >
                           <Star className="text-primary" size={12} />
-                          <div className="text-primary font-semibold text-xs">3+</div>
-                          <div className="text-xs font-poppins text-foreground">Years</div>
+                          <div className="text-primary font-semibold text-xs">
+                            3+
+                          </div>
+                          <div className="text-xs font-poppins text-foreground">
+                            Years
+                          </div>
                         </motion.div>
 
                         <motion.div
@@ -255,8 +281,12 @@ const HeroSection = () => {
                           transition={{ delay: 0.5, duration: 0.4 }}
                         >
                           <Trophy className="text-secondary" size={12} />
-                          <div className="text-secondary font-semibold text-xs">11+</div>
-                          <div className="text-xs font-poppins text-foreground">Projects</div>
+                          <div className="text-secondary font-semibold text-xs">
+                            11+
+                          </div>
+                          <div className="text-xs font-poppins text-foreground">
+                            Projects
+                          </div>
                         </motion.div>
                       </>
                     )}
@@ -295,9 +325,10 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                I’m Prashant — full-stack developer, AI enthusiast, and Data Science undergrad at IIT Jodhpur.
-
-With 3+ years of experience and 10+ client-driven solutions, I build scalable, AI-powered systems that solve real-world problems.
+                I’m Prashant — full-stack developer, AI enthusiast, and Data
+                Science undergrad at IIT Jodhpur. With 3+ years of experience
+                and 10+ client-driven solutions, I build scalable, AI-powered
+                systems that solve real-world problems.
               </motion.p>
 
               {/* Action buttons */}
@@ -376,7 +407,8 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                   Web Developer & UI/UX Designer in India
                 </h3>
                 <p className="text-xs text-muted-foreground font-poppins mb-2">
-                  Specializing in React, Next.js, Node.js and modern web technologies.
+                  Specializing in React, Next.js, Node.js and modern web
+                  technologies.
                 </p>
                 <div className="grid grid-cols-2 gap-1 text-xs font-poppins text-muted-foreground">
                   <div>• React/Next.js Expert</div>
@@ -417,13 +449,21 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                     <motion.div
                       className="absolute -inset-2 border-2 border-primary/20 rounded-full"
                       animate={{ rotate: [0, 360] }}
-                      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+                      transition={{
+                        duration: 25,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                     />
 
                     <motion.div
                       className="absolute -inset-4 border border-secondary/15 rounded-full border-dashed"
                       animate={{ rotate: [360, 0] }}
-                      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                      transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
                     />
                   </>
                 )}
@@ -435,15 +475,19 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                       <div className="w-12 h-12 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
                     </div>
                   )}
-                  
+
                   {imageError && (
                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-secondary/10">
                       <div className="text-center">
                         <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                           <Star className="text-primary" size={32} />
                         </div>
-                        <div className="text-lg text-muted-foreground font-semibold">Prashant</div>
-                        <div className="text-sm text-muted-foreground">Full-Stack Developer</div>
+                        <div className="text-lg text-muted-foreground font-semibold">
+                          Prashant
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          Full-Stack Developer
+                        </div>
                       </div>
                     </div>
                   )}
@@ -452,9 +496,9 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                     src={profileImage}
                     alt="Prashant - Full-Stack Developer & AI Expert"
                     className="w-full h-full object-cover"
-                    style={{ 
+                    style={{
                       opacity: imageLoaded ? 1 : 0,
-                      transition: 'opacity 0.3s ease-in-out'
+                      transition: "opacity 0.3s ease-in-out",
                     }}
                     onLoad={() => setImageLoaded(true)}
                     onError={() => setImageError(true)}
@@ -480,7 +524,9 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                       transition={{ delay: 0.3, duration: 0.4 }}
                     >
                       <Star className="text-primary" size={14} />
-                      <div className="text-primary font-semibold text-sm">3+</div>
+                      <div className="text-primary font-semibold text-sm">
+                        3+
+                      </div>
                       <div className="text-xs font-poppins whitespace-nowrap text-foreground">
                         Years Experience
                       </div>
@@ -493,7 +539,9 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                       transition={{ delay: 0.5, duration: 0.4 }}
                     >
                       <Trophy className="text-secondary" size={14} />
-                      <div className="text-secondary font-semibold text-sm">11+</div>
+                      <div className="text-secondary font-semibold text-sm">
+                        11+
+                      </div>
                       <div className="text-xs font-poppins whitespace-nowrap text-foreground">
                         Projects Completed
                       </div>
@@ -550,7 +598,9 @@ With 3+ years of experience and 10+ client-driven solutions, I build scalable, A
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <feature.icon className="text-primary" size={20} />
                 </div>
-                <h3 className="text-lg font-semibold text-foreground">{feature.title}</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  {feature.title}
+                </h3>
               </div>
               <p className="text-muted-foreground font-poppins">
                 {feature.description}
