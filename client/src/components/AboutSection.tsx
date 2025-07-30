@@ -534,13 +534,13 @@ const AboutSection = () => {
                 </span>
                 , and tech creator currently pursuing{" "}
                 <span className="text-accent font-semibold">
-                  B.Sc. (Hons.) in Data Science & Artificial Intelligence at IIT
+                  B.Sc./BS in Data Science & Artificial Intelligence at IIT
                   Jodhpur
                 </span>
                 .
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Born on 28th June in Milkipur, Azamgarh – near Varanasi, Uttar
+                Born on 28th June in Azamgarh – near Varanasi, Uttar
                 Pradesh, India. Raised in a humble background, my journey has
                 been one of consistent self-growth, driven by curiosity,
                 learning, and a deep interest in building tools that solve
