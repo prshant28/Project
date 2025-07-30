@@ -163,7 +163,7 @@ const HeroSection = () => {
                     transition={{ delay: 0.8, duration: 0.8 }}
                     whileHover={{ scale: 1.2, rotate: 10 }}
                   />
-                , It's Me</div>
+                It's Me</div>
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <span className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text tracking-wider">
                     Prashant
