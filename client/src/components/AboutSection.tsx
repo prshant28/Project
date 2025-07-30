@@ -25,6 +25,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import profileImage from "../assets/profile-new.png";
+import roseNameImage from "../assets/rose-name.avif";
 
 const AboutSection = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -504,9 +505,24 @@ const AboutSection = () => {
               transition={{ delay: 0.3, duration: 0.6 }}
               className="space-y-4"
             >
-              <h3 className="text-2xl font-bold text-foreground">
-                Hello It's Me Prashant Maurya 👋
-              </h3>
+              <div className="mb-4">
+                <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
+                  Hello It's Me 
+                  <span className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text tracking-wide">
+                    Prashant
+                  </span>
+                  <motion.img
+                    src={roseNameImage}
+                    alt="Decorative rose"
+                    className="w-8 h-8 object-cover"
+                    initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                    whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  />
+                </h3>
+              </div>
               <p className="text-muted-foreground leading-relaxed">
                 A passionate{" "}
                 <span className="text-primary font-semibold">
