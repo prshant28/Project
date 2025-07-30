@@ -47,7 +47,7 @@ const HeroSection = () => {
     { value: "3+", label: "Years Experience" },
     { value: "100+", label: "AI Tools Mastered" },
     { value: "11+", label: "Projects Built" },
-    { value: "2", label: "Companies Founded" },
+    { value: "2", label: "Startup Founded" },
   ];
 
   // SCROLL TO PROJECTS FUNCTION
@@ -295,9 +295,9 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                Started in 2022, now with 3+ years of experience building
-                scalable applications. Expert in 100+ AI tools, Founder & CEO of
-                GadgetsFever.in and HostWithUs.site.
+                I’m Prashant — full-stack developer, AI enthusiast, and Data Science undergrad at IIT Jodhpur.
+
+With 3+ years of experience and 10+ client-driven solutions, I build scalable, AI-powered systems that solve real-world problems.
               </motion.p>
 
               {/* Action buttons */}
