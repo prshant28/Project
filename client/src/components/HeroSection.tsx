@@ -92,7 +92,7 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center pt-20 sm:pt-24 pb-12 sm:pb-16 relative overflow-hidden w-full"
+      className="min-h-screen flex items-center pt-2 sm:pt-4 pb-12 sm:pb-16 relative overflow-hidden w-full"
     >
       {/* Optimized particles background */}
       {particles.map((particle, index) => (
