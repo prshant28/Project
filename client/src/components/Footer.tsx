@@ -131,41 +131,67 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-muted mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-muted-foreground text-sm mb-4 sm:mb-0">
-            © {currentYear} Prashant.dev. All rights reserved. Made with ❤️ - Crafted by Prashant
-          </p>
+        <div className="border-t border-muted mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <p className="text-muted-foreground text-sm text-center sm:text-left">
+              © {currentYear} Prashant.dev. All rights reserved. 
+            </p>
+            <p className="text-muted-foreground text-sm text-center sm:text-left">
+              Made with ❤️ - Crafted by Prashant
+            </p>
+          </div>
+          
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => handleSocialClick("GitHub", "https://github.com/prashantmaurya19")}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="GitHub Profile"
+            {/* Buy Me a Coffee Button */}
+            <a 
+              href="https://www.buymeacoffee.com/prshant.dev" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="transition-transform hover:scale-105"
             >
-              <Github size={18} />
-            </button>
-            <button 
-              onClick={() => handleSocialClick("LinkedIn", "https://linkedin.com/in/prashant-maurya-dev")}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="LinkedIn Profile"
-            >
-              <Linkedin size={18} />
-            </button>
-            <button 
-              onClick={() => handleSocialClick("Twitter", "https://twitter.com/prashant_dev19")}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Twitter Profile"
-            >
-              <Twitter size={18} />
-            </button>
-            <button 
-              onClick={() => handleSocialClick("Portfolio", "https://x247.site")}
-              className="text-muted-foreground hover:text-primary transition-colors"
-              aria-label="Portfolio Website"
-            >
-              <Dribbble size={18} />
-            </button>
+              <img 
+                src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" 
+                alt="Buy Me A Coffee" 
+                style={{height: '40px', width: '145px'}}
+                className="rounded-lg shadow-sm"
+              />
+            </a>
           </div>
         </div>
+        
+        {/* Social Icons Row */}
+        <div className="flex justify-center pt-4">
+          <div className="flex items-center gap-4">
+            <button 
+                onClick={() => handleSocialClick("GitHub", "https://github.com/prashantmaurya19")}
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="GitHub Profile"
+              >
+                <Github size={18} />
+              </button>
+              <button 
+                onClick={() => handleSocialClick("LinkedIn", "https://linkedin.com/in/prashant-maurya-dev")}
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="LinkedIn Profile"
+              >
+                <Linkedin size={18} />
+              </button>
+              <button 
+                onClick={() => handleSocialClick("Twitter", "https://twitter.com/prashant_dev19")}
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Twitter Profile"
+              >
+                <Twitter size={18} />
+              </button>
+              <button 
+                onClick={() => handleSocialClick("Portfolio", "https://x247.site")}
+                className="text-muted-foreground hover:text-primary transition-colors"
+                aria-label="Portfolio Website"
+              >
+                <Dribbble size={18} />
+              </button>
+            </div>
+          </div>
       </div>
     </footer>
   );
