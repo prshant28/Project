@@ -54,7 +54,7 @@ const AboutSection = () => {
     },
     {
       label: "Projects Built",
-      value: "50+",
+      value: "20+",
       icon: Code,
       color: "text-green-500",
     },
