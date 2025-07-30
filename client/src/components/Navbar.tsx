@@ -97,7 +97,7 @@ const Navbar = () => {
                 
                 {/* Hire Me Button */}
                 <a href="#contact" className="hire-button">
-                  <span>Hire Me</span>
+                  <span>Book A Call</span>
                   <ChevronRight size={16} />
                 </a>
               </div>
