@@ -134,10 +134,10 @@ const Footer = () => {
         <div className="border-t border-muted mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <p className="text-muted-foreground text-sm text-center sm:text-left">
-              © {currentYear} Prashant.dev. All rights reserved. 
+              © {currentYear} Prashant.dev. All rights reserved.
             </p>
             <p className="text-muted-foreground text-sm text-center sm:text-left">
-              Made with ❤️ - Crafted by Prashant
+            Made with ❤️ - Crafted by Prashant
             </p>
           </div>
           
