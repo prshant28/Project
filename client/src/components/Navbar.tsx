@@ -7,7 +7,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
@@ -16,7 +16,14 @@ const Navbar = () => {
         setIsScrolled(false);
       }
 
-      const sections = ["home", "projects", "skills", "about", "blog", "contact"];
+      const sections = [
+        "home",
+        "projects",
+        "skills",
+        "about",
+        "blog",
+        "contact",
+      ];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -42,15 +49,14 @@ const Navbar = () => {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
-  
+
   const navLinks = [
     { href: "#home", label: "Home" },
     { href: "#projects", label: "Projects" },
     { href: "#skills", label: "Skills" },
-    { href: "#timeline", label: "Timeline" },
     { href: "#about", label: "About" },
     { href: "#blog", label: "Blog" },
-    { href: "#contact", label: "Contact" }
+    { href: "#contact", label: "Contact" },
   ];
 
   return (
@@ -66,50 +72,52 @@ const Navbar = () => {
               <div className="logo-icon-rounded">
                 <Code2 size={20} className="text-white" />
               </div>
-              
+
               {/* Brand Text */}
               <div className="brand-text">
                 <span className="brand-name-rounded">PRASHANT</span>
                 <span className="brand-subtitle-rounded">.DEVELOPER</span>
               </div>
             </a>
-            
+
             {/* Desktop Navigation */}
             <div className="desktop-nav">
               {/* Navigation Pills */}
               <div className="nav-pills-container">
                 {navLinks.map((link) => (
-                  <a 
+                  <a
                     key={link.href}
-                    href={link.href} 
+                    href={link.href}
                     className={`nav-pill ${
-                      activeSection === link.href.substring(1) ? 'nav-pill-active' : ''
+                      activeSection === link.href.substring(1)
+                        ? "nav-pill-active"
+                        : ""
                     }`}
                   >
                     {link.label}
                   </a>
                 ))}
               </div>
-              
+
               {/* Right Controls */}
               <div className="header-controls">
                 <ThemeToggle />
-                
+
                 {/* Hire Me Button */}
                 <a href="#contact" className="hire-button">
-                  <span>Book A Call</span>
+                  <span>Hire Me</span>
                   <ChevronRight size={16} />
                 </a>
               </div>
             </div>
-            
+
             {/* Mobile Controls */}
             <div className="mobile-nav-controls">
               <ThemeToggle />
-              
+
               {/* Mobile Menu Button */}
-              <button 
-                className="mobile-menu-btn" 
+              <button
+                className="mobile-menu-btn"
                 onClick={toggleMobileMenu}
                 aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               >
@@ -119,24 +127,24 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <>
           {/* Backdrop */}
           <div className="mobile-overlay" onClick={closeMobileMenu} />
-          
+
           {/* Mobile Menu */}
           <div className="mobile-menu-rounded">
             <div className="mobile-menu-header">
               <h3>Navigation</h3>
             </div>
-            
+
             <div className="mobile-nav-links">
               {navLinks.map((link) => (
-                <a 
-                  key={link.href} 
-                  href={link.href} 
+                <a
+                  key={link.href}
+                  href={link.href}
                   className="mobile-nav-link"
                   onClick={closeMobileMenu}
                 >
@@ -145,13 +153,17 @@ const Navbar = () => {
                 </a>
               ))}
             </div>
-            
+
             <div className="mobile-menu-footer">
-              <a href="#contact" className="mobile-hire-btn" onClick={closeMobileMenu}>
+              <a
+                href="#contact"
+                className="mobile-hire-btn"
+                onClick={closeMobileMenu}
+              >
                 Get In Touch
                 <ChevronRight size={16} />
               </a>
-              
+
               <div className="mobile-footer-text">
                 <p>&copy; {new Date().getFullYear()} Prashant.dev</p>
                 <p>UI/UX Designer & Full Stack Developer</p>
