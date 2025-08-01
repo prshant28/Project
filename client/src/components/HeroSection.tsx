@@ -166,6 +166,7 @@ const HeroSection = () => {
                 <div className="flex items-center justify-center md:justify-start gap-3">
                   <span className="font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-transparent bg-clip-text tracking-wider">
                     Prashant
+                  </span>
                 </div>
               </motion.h1>
 
@@ -325,7 +326,7 @@ const HeroSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
               >
-                I’m Prashant — full-stack developer, AI enthusiast, and Data
+                I'm Prashant — full-stack developer, AI enthusiast, and Data
                 Science undergrad at IIT Jodhpur. With 3+ years of experience
                 and 10+ client-driven solutions, I build scalable, AI-powered
                 systems that solve real-world problems.
