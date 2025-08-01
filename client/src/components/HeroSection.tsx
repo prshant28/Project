@@ -152,7 +152,6 @@ const HeroSection = () => {
                 transition={{ delay: 0.1, duration: 0.5 }}
               >
                 <div className="text-foreground">Hello 
-                    </span>
                   {/* Rose at the end of name */}
                   <motion.img
                     src={roseNameImage}
