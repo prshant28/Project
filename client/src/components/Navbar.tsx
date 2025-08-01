@@ -16,7 +16,7 @@ const Navbar = () => {
         setIsScrolled(false);
       }
 
-      const sections = ["home", "projects", "skills", "timeline", "about", "blog", "contact"];
+      const sections = ["home", "projects", "skills", "about", "blog", "contact"];
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
