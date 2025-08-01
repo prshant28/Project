@@ -41,6 +41,7 @@ import {
   Zap,
   Layers,
   Globe,
+  Settings,
 } from "lucide-react";
 
 const TechStackCarousel = () => {
