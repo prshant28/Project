@@ -392,8 +392,28 @@ const TechStackCarousel = () => {
       ))}
 
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Enhanced Header */}
-        <motion.div style={{ opacity }} className="text-center mb-16">
+       {/* Enhanced Header */}
+        <motion.div
+          style={{ opacity }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: -30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <span className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/20 to-secondary/20 backdrop-blur-sm text-primary rounded-full text-sm font-medium tracking-wider uppercase border border-primary/30 shadow-lg">
+              <Settings size={16} />
+              Technologies
+              <Code size={16} />
+            </span>
+          </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: -20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -401,15 +421,20 @@ const TechStackCarousel = () => {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="font-alegreya font-bold text-3xl sm:text-4xl lg:text-5xl mb-4 relative inline-block bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text"
           >
-            Technologies I Work With
+            I Work With
             <motion.span
-              className="absolute -top-6 -right-6 text-primary opacity-70"
-              initial={{ scale: 0, rotate: -20 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, type: "spring" }}
+              className="absolute -top-4 -right-8 text-primary/60"
+              animate={{
+                rotate: [0, 10, -10, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
-              <Zap size={28} />
+              ✨
             </motion.span>
           </motion.h2>
 
@@ -418,7 +443,8 @@ const TechStackCarousel = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="max-w-2xl mx-auto text-muted-foreground"
+            className="max-w-3xl mx-auto text-lg text-muted-foreground"
+            style={{ fontFamily: '"Rajdhani", sans-serif' }}
           >
             A comprehensive showcase of the modern technologies, frameworks, and
             tools I use to build exceptional digital experiences.
