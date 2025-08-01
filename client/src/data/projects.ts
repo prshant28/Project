@@ -7,7 +7,7 @@ export const projects = [
     image:
       "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     category: "AI Platform",
-    technologies: ["AI", "Python", "JupyterLite", "Machine Learning", "React"],
+    technologies: ["AI", "Python", "JupyterLite", "React"],
     liveUrl: "https://educonnect.x247.site",
     sourceUrl: "#",
     featured: true,
