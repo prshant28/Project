@@ -190,7 +190,7 @@ const SkillsSection = () => {
           <StatCounter value="11" label="Projects Built" delay={0.1} />
           <StatCounter value="3" label="Years Experience" delay={0.2} />
           <StatCounter value="100" label="AI Tools Mastered" delay={0.3} />
-          <StatCounter value="2" label="Companies Founded" delay={0.4} />
+          <StatCounter value="2" label="Startup Founded" delay={0.4} />
         </div>
 
         {/* Skills Grid */}
